@@ -1,2 +1,12 @@
 DROP DATABASE IF EXISTS Daycare;
 CREATE DATABASE Daycare;
+
+USE Daycare;
+
+CREATE TABLE Family
+(
+FamilyID int NOT NULL AUTO_INCREMENT,
+EmergencyPhoneNum VARCHAR(12) NOT NULL,
+UNIQUE(FamilyID),
+PRIMARY KEY(FamilyID)
+);
