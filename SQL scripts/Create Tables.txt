@@ -1,48 +1,9 @@
-CREATE TABLE IF NOT EXISTS MonthlyExpenses
-( 
- 
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
-UtilityBill DECIMAL(10,2) NOT NULL,
-Rent DECIMAL(10,2) NOT NULL,
-PRIMARY KEY(ExpenseSheetID)
+DROP DATABASE IF EXISTS Daycare;
+CREATE DATABASE Daycare;
 
-);
-
-<<<<<<< HEAD
-CREATE TABLE IF NOT EXISTS Expenses
-( 
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
-FOREIGN KEY(FacilityID)
-REFERENCES FacilityExpenseSheet(Facility),
-PRIMARY KEY( ExpenseSheetID)
-	
-);
-
-CREATE TABLE IF NOT EXISTS Schedule
-( 
-FOREIGN KEY(EmpId)
-REFERENCES Employee(EmpId),
-Days DATE NOT NULL,
-hours INT,
-PRIMARY KEY(EmpId,Days)
-);
-
-CREATE TABLE IF NOT EXISTS EmployeeSalary
-(
-FOREIGN KEY(EmpId)
-REFERENCES Employee(EmpId),
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(FacilityID),
-WeekNum INT NOT NULL,
-Wage DECIMAL(10,2) NOT NULL,
-PRIMARY KEY(EmpId, Expense, FacilityID)
-
-);
+USE Daycare;
 
 
-=======
 CREATE TABLE IF NOT EXISTS Family
 (
 ID int AUTO_INCREMENT,
@@ -158,7 +119,7 @@ UNIQUE (DrugCode),
 PRIMARY KEY (DrugCode)
 );
 
-CREATE TABLE IF NOT EXISTS MedicationSheet
+CREATE TABLE IF NOT EXISTS MedicalSheet
 (
 DrugCode VARCHAR(15) NOT NULL,
 MedicareNum VARCHAR(14) NOT NULL,
@@ -328,6 +289,47 @@ Total DECIMAL(10,2) NOT NULL,
 PRIMARY KEY (ExpenseSheetID) 
 );
 
+CREATE TABLE IF NOT EXISTS MonthlyExpenses
+( 
+ 
+FOREIGN KEY(ExpenseSheetID)
+REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
+UtilityBill DECIMAL(10,2) NOT NULL,
+Rent DECIMAL(10,2) NOT NULL,
+PRIMARY KEY(ExpenseSheetID)
+
+);
+
+CREATE TABLE IF NOT EXISTS Expenses
+( 
+FOREIGN KEY(ExpenseSheetID)
+REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
+FOREIGN KEY(FacilityID)
+REFERENCES FacilityExpenseSheet(Facility),
+PRIMARY KEY( ExpenseSheetID)
+	
+);
+
+CREATE TABLE IF NOT EXISTS Schedule
+( 
+FOREIGN KEY(EmpId)
+REFERENCES Employee(EmpId),
+Days DATE NOT NULL,
+hours INT,
+PRIMARY KEY(EmpId,Days)
+);
+
+CREATE TABLE IF NOT EXISTS EmployeeSalary
+(
+FOREIGN KEY(EmpId)
+REFERENCES Employee(EmpId),
+FOREIGN KEY(ExpenseSheetID)
+REFERENCES FacilityExpenseSheet(FacilityID),
+WeekNum INT NOT NULL,
+Wage DECIMAL(10,2) NOT NULL,
+PRIMARY KEY(EmpId, Expense, FacilityID)
+
+);
 
 
 DELIMITER $$
@@ -343,4 +345,3 @@ BEGIN
 END$$
 
 DELIMITER ;
->>>>>>> 4b8854f83da26028a22f0eb0b065f4f20f37505a
