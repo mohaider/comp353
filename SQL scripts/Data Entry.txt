@@ -16,5 +16,30 @@ INSERT INTO PrimaryCaretaker VALUES(1, 3);
 
 INSERT INTO Child VALUES ("BPGQ 8412 0518", "Male", "1984-12-05", "Bob Burger", "Toddler");
 INSERT INTO Child VALUES ("AADG 8865 0087", "Female", "1984-12-05", "Jen Burger", "Infant");
+INSERT INTO Child VALUES ("CCGP 5112 8538", "Male", "2010-11-15", "John Madden", "Toddler");
+INSERT INTO Child VALUES ("XXZP 2265 6787", "Female", "2010-09-25", "Christina Aboobleera", "Infant");
+INSERT INTO Child VALUES ("XXXX 5590 1122", "Male", "2010-01-02", "The Rock", "Toddler");
+INSERT INTO Child VALUES ("SWQR 4444 1002", "Female", "2010-02-08", "Snoopie Dogg", "Infant");
+INSERT INTO Child VALUES ("AQSS 2201 2201", "Male", "2010-05-31", "Iggy Poop", "Toddler");
+INSERT INTO Child VALUES ("QSSD 9903 0012", "Female", "2010-03-12", "Sen Baluga", "Infant");
+INSERT INTO Child VALUES ("SDDC 8112 1220", "Male", "2010-12-12", "Tim Hiedecker", "Toddler");
+INSERT INTO Child VALUES ("FFTG 3445 9112", "Female", "2010-07-01", "Mama Mama", "Infant");
+INSERT INTO Child VALUES ("HHUI 4493 1000", "Male", "2010-12-12", "Eric Weirhiem", "Toddler");
+
+INSERT INTO Facility VALUES (0 , "Home", "9360 Place Honore-Primeau", "514 555-0192");
+
+INSERT INTO RegistrationSheet VALUES("AADG 8865 0087", 1, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("XXZP 2265 6787", 1, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("SWQR 4444 1002", 1, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("QSSD 9903 0012", 1, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("FFTG 3445 9112", 1, NOW(), NULL, "Infant");
+
+INSERT INTO RegistrationSheet VALUES("BPGQ 8412 0518", 1, NOW(), NULL, "Toddler");
+INSERT INTO RegistrationSheet VALUES("CCGP 5112 8538", 1, NOW(), NULL, "Toddler");
+INSERT INTO RegistrationSheet VALUES("XXXX 5590 1122", 1, NOW(), NULL, "Toddler");
+INSERT INTO RegistrationSheet VALUES("AQSS 2201 2201", 1, NOW(), NULL, "Toddler");
+INSERT INTO RegistrationSheet VALUES("SDDC 8112 1220", 1, NOW(), NULL, "Toddler");
+INSERT INTO RegistrationSheet VALUES("HHUI 4493 1000", 1, NOW(), NULL, "Toddler");
+
 INSERT INTO Room VALUES ("H540", "Toddler", "3454");
 INSERT INTO ChildOf VALUES ("BPGQ 8412 0518", 1);
