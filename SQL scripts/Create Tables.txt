@@ -332,7 +332,7 @@ FOREIGN KEY(ExpenseSheetID)
 REFERENCES FacilityExpenseSheet(FacilityID),
 WeekNum INT NOT NULL,
 Wage DECIMAL(10,2) NOT NULL,
-PRIMARY KEY(EmpId, Expense, FacilityID)
+PRIMARY KEY(EmpId, ExpenseSheetID, FacilityID)
 
 );
 
