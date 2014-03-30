@@ -291,7 +291,7 @@ PRIMARY KEY (ExpenseSheetID)
 
 CREATE TABLE IF NOT EXISTS MonthlyExpenses
 ( 
- 
+ ExpenseSheetID INT NOT NULL,
 FOREIGN KEY(ExpenseSheetID)
 REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
 UtilityBill DECIMAL(10,2) NOT NULL,
@@ -302,8 +302,10 @@ PRIMARY KEY(ExpenseSheetID)
 
 CREATE TABLE IF NOT EXISTS Expenses
 ( 
+ExpenseSheetID INT NOT NULL,
 FOREIGN KEY(ExpenseSheetID)
 REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
+FacilityID INT NOT NULL,
 FOREIGN KEY(FacilityID)
 REFERENCES FacilityExpenseSheet(Facility),
 PRIMARY KEY( ExpenseSheetID)
@@ -312,6 +314,7 @@ PRIMARY KEY( ExpenseSheetID)
 
 CREATE TABLE IF NOT EXISTS Schedule
 ( 
+EmpId INT NOT NULL,
 FOREIGN KEY(EmpId)
 REFERENCES Employee(EmpId),
 Days DATE NOT NULL,
@@ -321,8 +324,10 @@ PRIMARY KEY(EmpId,Days)
 
 CREATE TABLE IF NOT EXISTS EmployeeSalary
 (
+EmpId INT NOT NULL,
 FOREIGN KEY(EmpId)
 REFERENCES Employee(EmpId),
+ExpenseSheetID INT NOT NULL,
 FOREIGN KEY(ExpenseSheetID)
 REFERENCES FacilityExpenseSheet(FacilityID),
 WeekNum INT NOT NULL,
