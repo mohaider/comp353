@@ -291,11 +291,12 @@ PRIMARY KEY (ExpenseSheetID)
 
 CREATE TABLE IF NOT EXISTS MonthlyExpenses
 ( 
- ExpenseSheetID INT NOT NULL,
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
+ExpenseSheetID INT NOT NULL,
 UtilityBill DECIMAL(10,2) NOT NULL,
 Rent DECIMAL(10,2) NOT NULL,
+FOREIGN KEY(ExpenseSheetID)
+	REFERENCES FacilityExpenseSheet(ExpenseSheetID)
+	ON DELETE CASCADE,
 PRIMARY KEY(ExpenseSheetID)
 
 );
@@ -303,37 +304,40 @@ PRIMARY KEY(ExpenseSheetID)
 CREATE TABLE IF NOT EXISTS Expenses
 ( 
 ExpenseSheetID INT NOT NULL,
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
 FacilityID INT NOT NULL,
+FOREIGN KEY(ExpenseSheetID)
+	REFERENCES FacilityExpenseSheet(ExpenseSheetID)
+	ON DELETE CASCADE,
 FOREIGN KEY(FacilityID)
-REFERENCES FacilityExpenseSheet(Facility),
+	REFERENCES Facility(ID)
+	ON DELETE CASCADE,
 PRIMARY KEY( ExpenseSheetID)
-	
 );
 
 CREATE TABLE IF NOT EXISTS Schedule
 ( 
-EmpId INT NOT NULL,
-FOREIGN KEY(EmpId)
-REFERENCES Employee(EmpId),
+EmpID INT NOT NULL,
 Days DATE NOT NULL,
-hours INT,
-PRIMARY KEY(EmpId,Days)
+hours INT NOT NULL,
+FOREIGN KEY(EmpID)
+	REFERENCES Employee(EmpID)
+	ON DELETE CASCADE,
+PRIMARY KEY(EmpID,Days)
 );
 
 CREATE TABLE IF NOT EXISTS EmployeeSalary
 (
-EmpId INT NOT NULL,
-FOREIGN KEY(EmpId)
-REFERENCES Employee(EmpId),
+EmpID INT NOT NULL,
 ExpenseSheetID INT NOT NULL,
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(FacilityID),
-WeekNum INT NOT NULL,
+WeekNumYear VARCHAR(6) NOT NULL,
 Wage DECIMAL(10,2) NOT NULL,
-PRIMARY KEY(EmpId, ExpenseSheetID, FacilityID)
-
+FOREIGN KEY(EmpID)
+	REFERENCES Employee(EmpID)
+	ON DELETE CASCADE,
+FOREIGN KEY(ExpenseSheetID)
+	REFERENCES FacilityExpenseSheet(ExpenseSheetID)
+	ON DELETE CASCADE,
+PRIMARY KEY(EmpID, ExpenseSheetID, WeekNumYear)
 );
 
 
