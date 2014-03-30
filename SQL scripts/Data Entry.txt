@@ -15,4 +15,6 @@ INSERT INTO PrimaryCaretaker VALUES(1, 2);
 INSERT INTO PrimaryCaretaker VALUES(1, 3);
 
 INSERT INTO Child VALUES ("BPGQ 8412 0518", "Male", "1984-12-05", "Bob Burger", "Toddler");
+INSERT INTO Child VALUES ("AADG 8865 0087", "Female", "1984-12-05", "Jen Burger", "Infant");
+INSERT INTO Room VALUES ("H540", "Toddler", "3454");
 INSERT INTO ChildOf VALUES ("BPGQ 8412 0518", 1);

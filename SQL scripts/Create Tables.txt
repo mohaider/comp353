@@ -354,3 +354,18 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER BeforeSeatedInto
+BEFORE INSERT ON SeatedInto
+FOR EACH ROW  
+BEGIN
+	SELECT AgeGroup INTO @ChildAge FROM Child WHERE Child.MedicareNum = NEW.MedicareNum;
+	SELECT AgeGroup INTO @RoomAge FROM Room WHERE Room.RoomNum = NEW.RoomNum;
+	IF @ChildAge <> @RoomAge THEN
+  		signal sqlstate '45000' set message_text = "Room age doesn't match";
+	END IF;
+END$$
+
+DELIMITER ;
