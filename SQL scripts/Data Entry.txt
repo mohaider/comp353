@@ -1,0 +1,18 @@
+INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 303-5967");
+INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 494-4067");
+INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 555-3357");
+INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 464-0007");
+
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Joe Mac", "3003 Parc Ave.", "514 998-0244", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Stacey Mac", "3003 Parc Ave.", "514 998-0244", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Uncle Bob", "322 Poop Drive", "514 449-1244", "Guardian");
+
+INSERT INTO PrimaryCaretaker VALUES(1, 1);
+INSERT INTO PrimaryCaretaker VALUES(1, 2);
+INSERT INTO PrimaryCaretaker VALUES(1, 3);
+
+INSERT INTO Child VALUES ("BPGQ 8412 0518", "Male", "1984-12-05", "Bob Burger", "Toddler");
+INSERT INTO ChildOf VALUES ("BPGQ 8412 0518", 1);
