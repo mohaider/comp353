@@ -280,6 +280,14 @@ FOREIGN KEY (InvoiceID)
 PRIMARY KEY (InvoiceID)
 );
 
+CREATE TABLE IF NOT EXISTS FacilityExpenseSheet
+(
+ExpenseSheetID INT AUTO_INCREMENT,
+MonthYear VARCHAR(6) NOT NULL,
+Total DECIMAL(10,2) NOT NULL,
+PRIMARY KEY (ExpenseSheetID) 
+);
+
 
 
 DELIMITER $$
