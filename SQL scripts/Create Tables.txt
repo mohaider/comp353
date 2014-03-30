@@ -201,10 +201,10 @@ Name VARCHAR(30) NOT NULL,
 Address VARCHAR(30) NOT NULL,
 Role VARCHAR(7) NOT NULL,
 StartDate DATE NOT NULL,
-EndDate DATE ,
+EndDate DATE,
 SSN INT(9) NOT NULL,
 PRIMARY KEY(EmpId),
-CHECK(Role IN('employee','Manager','CPE','NLE')), 
+CHECK(Role IN('Employee','Manager','CPE','NLE')), 
 
 UNIQUE(SSN, EmpId)
 
@@ -372,7 +372,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE TRIGGER BeforeRegistrationHome
+CREATE TRIGGER BeforeRegistrationSheet
 BEFORE INSERT ON RegistrationSheet
 FOR EACH ROW  
 BEGIN
@@ -388,6 +388,18 @@ BEGIN
 			IF @cntInfant >= 4 THEN
 				signal sqlstate '45000' set message_text = "Too many infants";
 			END IF;
+		END IF;
+	END IF;
+
+	IF @FacilityType = "Center" THEN
+		SELECT COUNT(*) INTO @cntToddlers FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Toddler";
+		SELECT COUNT(*) INTO @cntInfant FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
+		SELECT COUNT(*) INTO @cntEmployees FROM EmployeeLists WHERE FacilityID = NEW.FacilityID;
+		IF @cntEmployees = 0 THEN
+			signal sqlstate '45000' set message_text = "No Employees";
+		END IF;
+		IF @cntInfant >= 5 * @cntEmployees OR @cntToddler >= 8 * @cntEmployees THEN 
+   			signal sqlstate '45000' set message_text = "Ratio of employee to children off";
 		END IF;
 	END IF;
 END$$
