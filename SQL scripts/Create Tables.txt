@@ -357,6 +357,20 @@ DELIMITER ;
 
 DELIMITER $$
 
+CREATE TRIGGER CheckDeleteGuardian
+BEFORE DELETE ON PrimaryCaretaker
+FOR EACH ROW  
+BEGIN
+	SELECT COUNT(GuardianID) INTO @cnt FROM PrimaryCaretaker WHERE FamilyID = OLD.FamilyID;
+	IF @cnt <= 1 THEN
+  		signal sqlstate '45000' set message_text = "A family must have at least 1 guardian!";
+	END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
 CREATE TRIGGER BeforeSeatedInto
 BEFORE INSERT ON SeatedInto
 FOR EACH ROW  
