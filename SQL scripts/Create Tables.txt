@@ -30,7 +30,7 @@ FOREIGN KEY(MedicareNum)
 	REFERENCES Child(MedicareNum)
 	ON DELETE CASCADE,
 FOREIGN KEY(FamilyID)
-	REFERENCES Family(ID),
+	REFERENCES Family(ID)
 	ON DELETE CASCADE,
 PRIMARY KEY(MedicareNum)
 );
@@ -66,7 +66,7 @@ ID INT NOT NULL AUTO_INCREMENT,
 Name VARCHAR(100) NOT NULL,
 Address VARCHAR(100) NOT NULL,
 PhoneNumber VARCHAR(12) NOT NULL,
-GuardianOrParent VHARCHAR(4) NOT NULL,
+GuardianOrParent VARCHAR(9) NOT NULL,
 CONSTRAINT Chk_Parent CHECK (GuardianOrParent IN ('Guardian', 'Parent')),
 UNIQUE (ID),
 PRIMARY KEY (ID)
@@ -85,20 +85,38 @@ FOREIGN KEY (FamilyID)
 PRIMARY KEY (FamilyID, GuardianID)
 );
 
+CREATE TABLE IF NOT EXISTS Allergies
+(
+AllergyType VARCHAR(50) NOT NULL,
+Severity VARCHAR(20) NOT NULL,
+RecommendedAct VARCHAR(150) NOT NULL,
+UNIQUE (AllergyType),
+PRIMARY KEY (AllergyType)
+);
 
+CREATE TABLE IF NOT EXISTS AllergySheet
+(
+AllergyType VARCHAR(50) NOT NULL,
+MedicareNum VARCHAR(14) NOT NULL,
+FOREIGN KEY (AllergyType)
+	REFERENCES Allergies(AllergyType)
+	ON DELETE CASCADE,
+FOREIGN KEY (MedicareNum)
+	REFERENCES Child(MedicareNum)
+	ON DELETE CASCADE,
+PRIMARY KEY (AllergyType, MedicareNum)
+);
 
 DELIMITER $$
 
 CREATE TRIGGER CheckInsertGuardian
-BEFORE INSERT
-ON PrimaryCaretaker
-FOR EACH ROW
+BEFORE INSERT ON PrimaryCaretaker
+FOR EACH ROW  
 BEGIN
-  SELECT COUNT(GuardianID) INTO @cnt FROM PrimaryCaretaker GROUP BY FamilyID;
-  IF @cnt >= 2 THEN
-    CALL sth(); -- raise an error
-  END IF;
-END
-$$
+	SELECT COUNT(GuardianID) INTO @cnt FROM PrimaryCaretaker WHERE FamilyID = NEW.FamilyID;
+	IF @cnt >= 2 THEN
+  		signal sqlstate '45000' set message_text = "Trying to enter a third Guardian";
+	END IF;
+END$$
 
 DELIMITER ;
