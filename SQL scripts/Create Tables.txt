@@ -1,12 +1,43 @@
-DROP DATABASE IF EXISTS Daycare;
-CREATE DATABASE Daycare;
+CREATE TABLE IF NOT EXISTS MonthlyExpenses
+( 
+ 
+FOREIGN KEY(ExpenseSheetID)
+REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
+UtilityBill DECIMAL(10,2) NOT NULL,
+Rent DECIMAL(10,2) NOT NULL,
+PRIMARY KEY(ExpenseSheetID)
 
-USE Daycare;
-
-CREATE TABLE Family
-(
-FamilyID int NOT NULL AUTO_INCREMENT,
-EmergencyPhoneNum VARCHAR(12) NOT NULL,
-UNIQUE(FamilyID),
-PRIMARY KEY(FamilyID)
 );
+
+CREATE TABLE IF NOT EXISTS Expenses
+( 
+FOREIGN KEY(ExpenseSheetID)
+REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
+FOREIGN KEY(FacilityID)
+REFERENCES FacilityExpenseSheet(Facility),
+PRIMARY KEY( ExpenseSheetID)
+	
+);
+
+CREATE TABLE IF NOT EXISTS Schedule
+( 
+FOREIGN KEY(EmpId)
+REFERENCES Employee(EmpId),
+Days DATE NOT NULL,
+hours INT,
+PRIMARY KEY(EmpId,Days)
+);
+
+CREATE TABLE IF NOT EXISTS EmployeeSalary
+(
+FOREIGN KEY(EmpId)
+REFERENCES Employee(EmpId),
+FOREIGN KEY(ExpenseSheetID)
+REFERENCES FacilityExpenseSheet(FacilityID),
+WeekNum INT NOT NULL,
+Wage DECIMAL(10,2) NOT NULL,
+PRIMARY KEY(EmpId, Expense, FacilityID)
+
+);
+
+
