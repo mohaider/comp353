@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS RegistrationSheet
 MedicareNum VARCHAR(14) NOT NULL,
 FacilityID INT NOT NULL,
 StartDate DATE NOT NULL,
-EndDate DATE NOT NULL,
+EndDate DATE,
 AgeGroup VARCHAR(25) NOT NULL,
 FOREIGN KEY (MedicareNum)
 	REFERENCES Child(MedicareNum)
@@ -201,10 +201,10 @@ Name VARCHAR(30) NOT NULL,
 Address VARCHAR(30) NOT NULL,
 Role VARCHAR(7) NOT NULL,
 StartDate DATE NOT NULL,
-EndDate DATE ,
+EndDate DATE,
 SSN INT(9) NOT NULL,
 PRIMARY KEY(EmpId),
-CHECK(Role IN('employee','Manager','CPE','NLE')), 
+CHECK(Role IN('Employee','Manager','CPE','NLE')), 
 
 UNIQUE(SSN, EmpId)
 
@@ -291,11 +291,12 @@ PRIMARY KEY (ExpenseSheetID)
 
 CREATE TABLE IF NOT EXISTS MonthlyExpenses
 ( 
- ExpenseSheetID INT NOT NULL,
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
+ExpenseSheetID INT NOT NULL,
 UtilityBill DECIMAL(10,2) NOT NULL,
 Rent DECIMAL(10,2) NOT NULL,
+FOREIGN KEY(ExpenseSheetID)
+	REFERENCES FacilityExpenseSheet(ExpenseSheetID)
+	ON DELETE CASCADE,
 PRIMARY KEY(ExpenseSheetID)
 
 );
@@ -303,37 +304,40 @@ PRIMARY KEY(ExpenseSheetID)
 CREATE TABLE IF NOT EXISTS Expenses
 ( 
 ExpenseSheetID INT NOT NULL,
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(ExpenseSheetID ),
 FacilityID INT NOT NULL,
+FOREIGN KEY(ExpenseSheetID)
+	REFERENCES FacilityExpenseSheet(ExpenseSheetID)
+	ON DELETE CASCADE,
 FOREIGN KEY(FacilityID)
-REFERENCES FacilityExpenseSheet(Facility),
+	REFERENCES Facility(ID)
+	ON DELETE CASCADE,
 PRIMARY KEY( ExpenseSheetID)
-	
 );
 
 CREATE TABLE IF NOT EXISTS Schedule
 ( 
-EmpId INT NOT NULL,
-FOREIGN KEY(EmpId)
-REFERENCES Employee(EmpId),
+EmpID INT NOT NULL,
 Days DATE NOT NULL,
-hours INT,
-PRIMARY KEY(EmpId,Days)
+hours INT NOT NULL,
+FOREIGN KEY(EmpID)
+	REFERENCES Employee(EmpID)
+	ON DELETE CASCADE,
+PRIMARY KEY(EmpID,Days)
 );
 
 CREATE TABLE IF NOT EXISTS EmployeeSalary
 (
-EmpId INT NOT NULL,
-FOREIGN KEY(EmpId)
-REFERENCES Employee(EmpId),
+EmpID INT NOT NULL,
 ExpenseSheetID INT NOT NULL,
-FOREIGN KEY(ExpenseSheetID)
-REFERENCES FacilityExpenseSheet(FacilityID),
-WeekNum INT NOT NULL,
+WeekNumYear VARCHAR(6) NOT NULL,
 Wage DECIMAL(10,2) NOT NULL,
-PRIMARY KEY(EmpId, ExpenseSheetID, FacilityID)
-
+FOREIGN KEY(EmpID)
+	REFERENCES Employee(EmpID)
+	ON DELETE CASCADE,
+FOREIGN KEY(ExpenseSheetID)
+	REFERENCES FacilityExpenseSheet(ExpenseSheetID)
+	ON DELETE CASCADE,
+PRIMARY KEY(EmpID, ExpenseSheetID, WeekNumYear)
 );
 
 
@@ -346,6 +350,71 @@ BEGIN
 	SELECT COUNT(GuardianID) INTO @cnt FROM PrimaryCaretaker WHERE FamilyID = NEW.FamilyID;
 	IF @cnt >= 2 THEN
   		signal sqlstate '45000' set message_text = "Trying to enter a third Guardian";
+	END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER CheckDeleteGuardian
+BEFORE DELETE ON PrimaryCaretaker
+FOR EACH ROW  
+BEGIN
+	SELECT COUNT(GuardianID) INTO @cnt FROM PrimaryCaretaker WHERE FamilyID = OLD.FamilyID;
+	IF @cnt <= 1 THEN
+  		signal sqlstate '45000' set message_text = "A family must have at least 1 guardian!";
+	END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER BeforeSeatedInto
+BEFORE INSERT ON SeatedInto
+FOR EACH ROW  
+BEGIN
+	SELECT AgeGroup INTO @ChildAge FROM Child WHERE Child.MedicareNum = NEW.MedicareNum;
+	SELECT AgeGroup INTO @RoomAge FROM Room WHERE Room.RoomNum = NEW.RoomNum;
+	IF @ChildAge <> @RoomAge THEN
+  		signal sqlstate '45000' set message_text = "Room age doesn't match";
+	END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER BeforeRegistrationSheet
+BEFORE INSERT ON RegistrationSheet
+FOR EACH ROW  
+BEGIN
+	SELECT Type INTO @FacilityType FROM Facility WHERE Facility.ID = NEW.FacilityID;
+	IF @FacilityType = "Home" THEN
+
+		SELECT COUNT(*) INTO @cntChildren FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID;
+		IF @cntChildren >= 9 THEN 
+   			signal sqlstate '45000' set message_text = "Too many children";
+		END IF;
+		IF NEW.AgeGroup = "Infant" THEN
+			SELECT COUNT(*) INTO @cntInfant FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
+			IF @cntInfant >= 4 THEN
+				signal sqlstate '45000' set message_text = "Too many infants";
+			END IF;
+		END IF;
+	END IF;
+
+	IF @FacilityType = "Center" THEN
+		SELECT COUNT(*) INTO @cntToddlers FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Toddler";
+		SELECT COUNT(*) INTO @cntInfant FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
+		SELECT COUNT(*) INTO @cntEmployees FROM EmployeeLists WHERE FacilityID = NEW.FacilityID;
+		IF @cntEmployees = 0 THEN
+			signal sqlstate '45000' set message_text = "No Employees";
+		END IF;
+		IF @cntInfant >= 5 * @cntEmployees OR @cntToddler >= 8 * @cntEmployees THEN 
+   			signal sqlstate '45000' set message_text = "Ratio of employee to children off";
+		END IF;
 	END IF;
 END$$
 
