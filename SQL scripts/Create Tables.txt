@@ -407,12 +407,12 @@ BEGIN
 
 	IF @FacilityType = "Center" THEN
 		SELECT COUNT(*) INTO @cntToddlers FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Toddler";
-		SELECT COUNT(*) INTO @cntInfant FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
+		SELECT COUNT(*) INTO @cntInfants FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
 		SELECT COUNT(*) INTO @cntEmployees FROM EmployeeLists WHERE FacilityID = NEW.FacilityID;
 		IF @cntEmployees = 0 THEN
 			signal sqlstate '45000' set message_text = "No Employees";
 		END IF;
-		IF @cntInfant >= 5 * @cntEmployees OR @cntToddler >= 8 * @cntEmployees THEN 
+		IF (@cntInfants >= 5 * @cntEmployees OR @cntToddlers >= 8 * @cntEmployees) OR (@cntInfants + @cntToddlers >= 8 * @cntEmployees) THEN 
    			signal sqlstate '45000' set message_text = "Ratio of employee to children off";
 		END IF;
 	END IF;
