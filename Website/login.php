@@ -4,7 +4,7 @@
 	{
 		if ($_POST["submitFrmLogin"] === "Submit")
 		{	
-			$empID = $_POST["txtEmpIDName"];
+			$empID = intval($_POST["txtEmpIDName"]);
 			$password = $_POST["txtPasswordName"];
 			if(login($empID, $password))
 			{
