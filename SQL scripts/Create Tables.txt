@@ -449,3 +449,13 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE insertEmployee(IN name VARCHAR(255), IN address VARCHAR(255), IN role VARCHAR(255), IN sDate DATE, IN ssnNew VARCHAR(255))
+BEGIN
+	INSERT INTO Employee VALUES (0, name, address, role, sDate, NULL, ssnNew);
+	SELECT EmpID FROM Employee WHERE Employee.SSN = ssnNew;
+END$$
+
+DELIMITER ;
