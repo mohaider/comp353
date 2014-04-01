@@ -431,3 +431,21 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE getFamilyFromFacility(IN fID INT, IN ln VARCHAR(255), IN pn VARCHAR(255))
+BEGIN
+	SELECT *
+	FROM Family
+	WHERE Family.ID IN
+	(SELECT DISTINCT(FamilyID)
+	 FROM ChildOf
+	 JOIN (SELECT DISTINCT(MedicareNum)
+	      FROM RegistrationSheet
+	      WHERE FacilityID = fID) AS MediNum
+	 ON ChildOf.MedicareNum = MediNum.MedicareNum) 
+        AND Family.LastName = ln AND Family.PhoneNum = pn;
+END$$
+
+DELIMITER ;
