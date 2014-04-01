@@ -1,18 +1,7 @@
-INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 303-5967");
-INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 494-4067");
-INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 555-3357");
-INSERT INTO Family (EmergencyPhoneNum) VALUES ("514 464-0007");
-
-INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
-VALUES ("Joe Mac", "3003 Parc Ave.", "514 998-0244", "Parent");
-INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
-VALUES ("Stacey Mac", "3003 Parc Ave.", "514 998-0244", "Parent");
-INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
-VALUES ("Uncle Bob", "322 Poop Drive", "514 449-1244", "Guardian");
-
-INSERT INTO PrimaryCaretaker VALUES(1, 1);
-INSERT INTO PrimaryCaretaker VALUES(1, 2);
-INSERT INTO PrimaryCaretaker VALUES(1, 3);
+INSERT INTO Family VALUES (0, "Mac", "514 303-5967");
+INSERT INTO Family VALUES (0, "McDuffin", "514 494-4067");
+INSERT INTO Family VALUES (0, "Bob", "514 555-3357");
+INSERT INTO Family VALUES (0, "Doop", "514 464-0007");
 
 INSERT INTO Child VALUES ("BPGQ 8412 0518", "Male", "1984-12-05", "Bob Burger", "Toddler");
 INSERT INTO Child VALUES ("AADG 8865 0087", "Female", "1984-12-05", "Jen Burger", "Infant");
@@ -30,31 +19,83 @@ INSERT INTO Child VALUES ("BVCX 5757 9022", "Female", "2010-04-21", "Spaghetti M
 INSERT INTO Child VALUES ("AAAA 1235 5858", "Female", "2010-04-21", "Betty Boop", "Infant");
 INSERT INTO Child VALUES ("ASGH 4433 1212", "Female", "2010-04-21", "Meg Ryan", "Infant");
 INSERT INTO Child VALUES ("QWWE 9948 3333", "Female", "2010-04-21", "Patricia Arquette", "Infant");
-INSERT INTO Child VALUES ("AXXZ 5229 1102", "Female", "2010-04-21", "Molly Ringwald", "Infant");
-INSERT INTO Child VALUES ("ZXBC 5942 4453", "Female", "2010-04-21", "Selma Hiyek", "Infant");
-INSERT INTO Child VALUES ("QQQX 4437 3422", "Female", "2010-04-21", "Melissa Sciannanteno", "Infant");
-INSERT INTO Child VALUES ("NGHJ 6868 7222", "Female", "2010-04-21", "Athena Sciannanteno", "Infant");
+
+INSERT INTO ChildOf VALUES ("BPGQ 8412 0518", 1);
+INSERT INTO ChildOf VALUES ("AADG 8865 0087", 1);
+INSERT INTO ChildOf VALUES ("CCGP 5112 8538", 1);
+INSERT INTO ChildOf VALUES ("XXZP 2265 6787", 1);
+INSERT INTO ChildOf VALUES ("XXXX 5590 1122", 2);
+INSERT INTO ChildOf VALUES ("SWQR 4444 1002", 2);
+INSERT INTO ChildOf VALUES ("AQSS 2201 2201", 2);
+INSERT INTO ChildOf VALUES ("QSSD 9903 0012", 2);
+INSERT INTO ChildOf VALUES ("SDDC 8112 1220", 2);
+INSERT INTO ChildOf VALUES ("FFTG 3445 9112", 2);
+INSERT INTO ChildOf VALUES ("HHUI 4493 1000", 3);
+INSERT INTO ChildOf VALUES ("DSGT 6978 1222", 3);
+INSERT INTO ChildOf VALUES ("BVCX 5757 9022", 3);
+INSERT INTO ChildOf VALUES ("AAAA 1235 5858", 4);
+INSERT INTO ChildOf VALUES ("ASGH 4433 1212", 4);
+INSERT INTO ChildOf VALUES ("QWWE 9948 3333", 4);
+
+INSERT INTO AuthorizedContact VALUES ("514 555-0090", "Granny Smith", "GrandMother", "Yes");
+INSERT INTO IsAuthorized VALUES ("514 555-0090", 1);
+INSERT INTO AuthorizedContact VALUES ("514 099-8879", "Papa Johnh", "GrandFather", "Yes");
+INSERT INTO IsAuthorized VALUES ("514 099-8879", 2);
+INSERT INTO AuthorizedContact VALUES ("514 344-9920", "Uncie Herb", "Uncle", "Yes");
+INSERT INTO IsAuthorized VALUES ("514 344-9920", 3);
+INSERT INTO AuthorizedContact VALUES ("514 566-0089", "Auntie Poop", "Aunt", "Yes");
+INSERT INTO IsAuthorized VALUES ("514 566-0089", 1);
+
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Joe Mac", "3003 Parc Ave.", "514 303-5967", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Stacey Mac", "3003 Parc Ave.", "514 303-5967", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Uncle Bob", "322 Poop Drive", "514 555-3357", "Guardian");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Betty McDuffin", "255 Effin' Drive", "514 494-4067", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Johnny McDuffin", "255 Effin' Drive", "514 494-4067", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Denny Doop", "555 Fifth Poop", "514 464-0007", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Denise Doop", "555 Fifth Poop", "514 494-4067", "Parent");
+
+INSERT INTO PrimaryCaretaker VALUES(1, 1);
+INSERT INTO PrimaryCaretaker VALUES(1, 2);
+INSERT INTO PrimaryCaretaker VALUES(3, 3);
+INSERT INTO PrimaryCaretaker VALUES(2, 4);
+INSERT INTO PrimaryCaretaker VALUES(2, 5);
+INSERT INTO PrimaryCaretaker VALUES(4, 6);
+INSERT INTO PrimaryCaretaker VALUES(4, 7);
 
 INSERT INTO Facility VALUES (0 , "Home", "9360 Place Honore-Primeau", "514 555-0192");
 INSERT INTO Facility VALUES (0 , "Center", "1220 AVE. PineWood", "514 932-0091");
 
-INSERT INTO Employee VALUES (0, "Joey Jojo", "2335 Poop Lane", "Employe", NOW(), NULL, "123029294");
+INSERT INTO Employee VALUES (0, "Joey Jojo", "2335 Poop Lane", "Employee", NOW(), NULL, "123029294");
 INSERT INTO EmployeeLists VALUES (1, 2);
-INSERT INTO Employee VALUES (0, "John Popo", "123 Bane Pain", "Employe", NOW(), NULL, "954821059");
+INSERT INTO Employee VALUES (0, "John Popo", "123 Bane Pain", "Employee", NOW(), NULL, "954821059");
 INSERT INTO EmployeeLists VALUES (2, 2);
+INSERT INTO Employee VALUES (0, "Marry May", "333 Park Place", "Manager", NOW(), NULL, "443256789");
+INSERT INTO EmployeeLists VALUES (3, 2);
+INSERT INTO Employee VALUES (0, "Mini Driver", "2133 De Mauve", "Manager", NOW(), NULL, "111234332");
+INSERT INTO EmployeeLists VALUES (4, 1);
+INSERT INTO Employee VALUES (0, "Boop Bop", "One Infinite Loop", "Employee", NOW(), NULL, "499324567");
+INSERT INTO EmployeeLists VALUES (5, 1);
+INSERT INTO Employee VALUES (0, "Bob Dewilliger", "234 Slurpie good", "CPE", NOW(), NULL, "599234532");
+INSERT INTO Employee VALUES (0, "Poor Bob", "333 Three Threes", "NLE", NOW(), NULL, "786543921");
+INSERT INTO EmployeeLists VALUES (6, 1);
 
 INSERT INTO RegistrationSheet VALUES("AADG 8865 0087", 2, NOW(), NULL, "Infant");
 INSERT INTO RegistrationSheet VALUES("XXZP 2265 6787", 2, NOW(), NULL, "Infant");
 INSERT INTO RegistrationSheet VALUES("SWQR 4444 1002", 2, NOW(), NULL, "Infant");
 INSERT INTO RegistrationSheet VALUES("QSSD 9903 0012", 2, NOW(), NULL, "Infant");
 INSERT INTO RegistrationSheet VALUES("FFTG 3445 9112", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("BVCX 5757 9022", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("DSGT 6978 1222", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("AAAA 1235 5858", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("ASGH 4433 1212", 2, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("BVCX 5757 9022", 1, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("DSGT 6978 1222", 1, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("AAAA 1235 5858", 1, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("ASGH 4433 1212", 1, NOW(), NULL, "Infant");
 INSERT INTO RegistrationSheet VALUES("QWWE 9948 3333", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("ZXBC 5942 4453", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("QQQX 4437 3422", 2, NOW(), NULL, "Infant");
 
 INSERT INTO RegistrationSheet VALUES("BPGQ 8412 0518", 2, NOW(), NULL, "Toddler");
 INSERT INTO RegistrationSheet VALUES("CCGP 5112 8538", 2, NOW(), NULL, "Toddler");
@@ -64,4 +105,49 @@ INSERT INTO RegistrationSheet VALUES("SDDC 8112 1220", 2, NOW(), NULL, "Toddler"
 INSERT INTO RegistrationSheet VALUES("HHUI 4493 1000", 2, NOW(), NULL, "Toddler");
 
 INSERT INTO Room VALUES ("H540", "Toddler", "3454");
-INSERT INTO ChildOf VALUES ("BPGQ 8412 0518", 1);
+INSERT INTO Room VALUES ("H545", "Infant", "6779");
+INSERT INTO Room VALUES ("H547", "Toddler", "3344");
+INSERT INTO Room VALUES ("C350", "Infant", "3000");
+
+INSERT INTO Houses VALUES ("H540", 2);
+INSERT INTO Houses VALUES ("H545", 2);
+INSERT INTO Houses VALUES ("H547", 2);
+INSERT INTO Houses VALUES ("C350", 1);
+
+INSERT INTO SeatedInto VALUES ("AADG 8865 0087", "H545");
+INSERT INTO SeatedInto VALUES ("XXZP 2265 6787", "H545");
+INSERT INTO SeatedInto VALUES ("SWQR 4444 1002", "H545");
+INSERT INTO SeatedInto VALUES ("QSSD 9903 0012", "H545");
+INSERT INTO SeatedInto VALUES ("FFTG 3445 9112", "H545");
+
+INSERT INTO SeatedInto VALUES ("BVCX 5757 9022", "C350");
+INSERT INTO SeatedInto VALUES ("DSGT 6978 1222", "C350");
+INSERT INTO SeatedInto VALUES ("AAAA 1235 5858", "C350");
+INSERT INTO SeatedInto VALUES ("ASGH 4433 1212", "C350");
+
+INSERT INTO SeatedInto VALUES ("BPGQ 8412 0518", "H540");
+INSERT INTO SeatedInto VALUES ("CCGP 5112 8538", "H540");
+INSERT INTO SeatedInto VALUES ("XXXX 5590 1122", "H540");
+INSERT INTO SeatedInto VALUES ("AQSS 2201 2201", "H540");
+INSERT INTO SeatedInto VALUES ("SDDC 8112 1220", "H540");
+INSERT INTO SeatedInto VALUES ("HHUI 4493 1000", "H540");
+
+INSERT INTO Supervises VALUES (1, "H545");
+INSERT INTO Supervises VALUES (2, "H540");
+INSERT INTO Supervises VALUES (3, "H547");
+INSERT INTO Supervises VALUES (5, "C350");
+
+INSERT INTO Allergies VALUES ("Peanut", "High", "Epinephrine");
+INSERT INTO Allergies VALUES ("Penicillin", "High", "Epinephrine");
+INSERT INTO Allergies VALUES ("Latex", "Low", "None");
+INSERT INTO Allergies VALUES ("Pollen", "Low", "Kleenex");
+
+INSERT INTO AllergySheet VALUES ("Peanut", "AADG 8865 0087");
+INSERT INTO AllergySheet VALUES ("Penicillin", "CCGP 5112 8538");
+
+INSERT INTO Medication VALUES ("333-333-1343AX", "Epipen", "Injection");
+INSERT INTO Medication VALUES ("322-1S5F-1887AX", "Ritalin", "Oral");
+
+INSERT INTO MedicalSheet VALUES ("333-333-1343AX", "AADG 8865 0087");
+INSERT INTO MedicalSheet VALUES ("333-333-1343AX", "CCGP 5112 8538");
+INSERT INTO MedicalSheet VALUES ("322-1S5F-1887AX", "DSGT 6978 1222");
