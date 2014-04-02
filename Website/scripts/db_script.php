@@ -1,13 +1,17 @@
 <?php
 	function db_connect()
 	{
-		$connection = new mysqli("localhost", "root", "", "Daycare");
-		if ($connection->connect_errno)
-		{
-			die ($connection->connect_error);
-		}
-	
+		$connection = mysqli_connect("localhost", "root", "", "Daycare") or die ("Could not establish connection" . mysql_error());
+		
 		return $connection;
+	}
+	
+	function cleanDatabaseBuffer($connection)
+	{
+		while(mysqli_more_results($connection))
+		{
+			mysqli_next_result($connection);
+		}
 	}
 	
 	function db_close($connection)
