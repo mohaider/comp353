@@ -1,6 +1,7 @@
 <?php
 	//Login scripts
 	
+	include_once('scripts/db_script.php');
 	function login($empID, $password)
 	{	
 		//connect to DBMS
@@ -21,11 +22,14 @@
 	function validateEmpID($connection, $empID)
 	{
 		//we hae to verify that the employee ID is in the database
-		$result = mysql_query("SELECT COUNT(*) FROM Logins WHERE EmpID = " . $empID . ";");
-		
+		$result = mysqli_query($connection, "SELECT COUNT(*) FROM Logins WHERE EmpID = " . $empID . ";");
+		if ($result === FALSE)
+		{
+			die (mysqli_error($connecton));
+		}
 		//if we have 0 or more than 1 result for a specific EmpID, there is a problem, so only
 		//accept when we have 1 user.
-		return (mysql_result($result, 0) == 1);
+		return (mysqli_fetch_row($result)[0] == 1);
 	}
 	
 	function getUserInfo($connection, $empID)
@@ -35,8 +39,8 @@
 		
 		//I think returning an array in the form [empID, cryptedPassword] would be good
 		//because we should only received one row since IDs should be unique
-		$result = mysql_query("SELECT * FROM Logins WHERE EmpID = " . $empID . ";");
-		$row = mysql_fetch_row($result);
+		$result = mysqlI_query($connection, "SELECT * FROM Logins WHERE EmpID = " . $empID . ";");
+		$row = mysqli_fetch_row($result);
 		$userInfo = array($row[0], $row[1]);
 		return $userInfo;
 	}

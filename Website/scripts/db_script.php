@@ -1,19 +1,17 @@
 <?php
 	function db_connect()
 	{
-		$connection = mysql_connect("localhost", "root", "");
-		if (!$connection)
-			die ("Could not establish connection" . mysql_error());
-			
-		//select DB
-		if (!mysql_select_db("Daycare"))
-			die ("Could not connect to database" . mysql_error());
-		
+		$connection = new mysqli("localhost", "root", "", "Daycare");
+		if ($connection->connect_errno)
+		{
+			die ($connection->connect_error);
+		}
+	
 		return $connection;
 	}
 	
 	function db_close($connection)
 	{
-		mysql_close($connection);
+		mysqli_close($connection);
 	}
 ?>
