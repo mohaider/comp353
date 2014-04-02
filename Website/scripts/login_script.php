@@ -4,14 +4,8 @@
 	function login($empID, $password)
 	{	
 		//connect to DBMS
-		$connection = mysql_connect("localhost", "root", "");
-		if (!$connection)
-			die ("Could not establish connection" . mysql_error());
-			
-		//select DB
-		if (!mysql_select_db("Daycare"))
-			die ("Could not connect to database" . mysql_error());
-
+		$connection = db_connect();
+		
 		//Validate ID
 		if (validateEmpID($connection, $empID))
 		{
@@ -21,7 +15,7 @@
 		else
 		{ return false; }
 		
-		mysql_close($connection);
+		db_close($connection);
 	}
 	
 	function validateEmpID($connection, $empID)
@@ -49,7 +43,7 @@
 	
 	function validateInfo($empID, $password, $dataBaseEmpID, $dataBasePassword)
 	{
-		//verify that both the user input and the actual password match by comparing their hash
+		#decrypt password
 		$cryptedPassword = encryptPassword($password);
 		return ($cryptedPassword == $dataBasePassword);
 	}
