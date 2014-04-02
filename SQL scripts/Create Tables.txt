@@ -339,6 +339,30 @@ FOREIGN KEY(ExpenseSheetID)
 PRIMARY KEY(EmpID, ExpenseSheetID, WeekNumYear)
 );
 
+DELIMITER $$
+
+DROP TABLE IF EXISTS blocked_insert_message;
+
+CREATE TABLE blocked_insert_message 
+(
+unique_error_msg VARCHAR(330) NOT NULL,
+UNIQUE KEY `unique_error_msg` (`unique_error_msg`)
+);
+
+DROP PROCEDURE IF EXISTS die_with_error;
+
+CREATE PROCEDURE die_with_error(msg varchar(300))
+	COMMENT 'Call this to STOP ACTION with a message.'
+	MODIFIES SQL DATA BEGIN
+	DECLARE ts DATETIME DEFAULT NOW();
+	DECLARE txt VARCHAR(300) DEFAULT msg;
+	DECLARE uniq VARCHAR(330) DEFAULT (SELECT CONCAT(ts, ': ', txt));
+	
+	INSERT INTO blocked_insert_message VALUES (uniq);
+	INSERT INTO blocked_insert_message VALUES (uniq);
+END $$
+
+DELIMITER ;
 
 DELIMITER $$
 
@@ -348,7 +372,7 @@ FOR EACH ROW
 BEGIN
 	SELECT COUNT(GuardianID) INTO @cnt FROM PrimaryCaretaker WHERE FamilyID = NEW.FamilyID;
 	IF @cnt >= 2 THEN
-  		signal sqlstate '45000' set message_text = "Trying to enter a third Guardian";
+  		CALL die_with_error('Too many guardians');
 	END IF;
 END$$
 
@@ -362,7 +386,7 @@ FOR EACH ROW
 BEGIN
 	SELECT COUNT(GuardianID) INTO @cnt FROM PrimaryCaretaker WHERE FamilyID = OLD.FamilyID;
 	IF @cnt <= 1 THEN
-  		signal sqlstate '45000' set message_text = "A family must have at least 1 guardian!";
+  		CALL die_with_error('Too few guardians');
 	END IF;
 END$$
 
@@ -376,8 +400,8 @@ FOR EACH ROW
 BEGIN
 	SELECT AgeGroup INTO @ChildAge FROM Child WHERE Child.MedicareNum = NEW.MedicareNum;
 	SELECT AgeGroup INTO @RoomAge FROM Room WHERE Room.RoomNum = NEW.RoomNum;
-	IF @ChildAge <> @RoomAge THEN
-  		signal sqlstate '45000' set message_text = "Room age doesn't match";
+	IF @ChildAge != @RoomAge THEN
+  		CALL die_with_error('Age group does not match');
 	END IF;
 END$$
 
@@ -407,12 +431,12 @@ BEGIN
 
 		SELECT COUNT(*) INTO @cntChildren FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID;
 		IF @cntChildren >= 9 THEN 
-   			signal sqlstate '45000' set message_text = "Too many children";
+   			CALL die_with_error('Too many children');
 		END IF;
 		IF NEW.AgeGroup = "Infant" THEN
 			SELECT COUNT(*) INTO @cntInfant FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
 			IF @cntInfant >= 4 THEN
-				signal sqlstate '45000' set message_text = "Too many infants";
+				CALL die_with_error('Too many infants');
 			END IF;
 		END IF;
 	END IF;
@@ -422,10 +446,10 @@ BEGIN
 		SELECT COUNT(*) INTO @cntInfants FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
 		SELECT COUNT(*) INTO @cntEmployees FROM EmployeeLists WHERE FacilityID = NEW.FacilityID;
 		IF @cntEmployees = 0 THEN
-			signal sqlstate '45000' set message_text = "No Employees";
+			CALL die_with_error('No Employees');
 		END IF;
 		IF (@cntInfants >= 5 * @cntEmployees OR @cntToddlers >= 8 * @cntEmployees) OR (@cntInfants + @cntToddlers >= 8 * @cntEmployees) THEN 
-   			signal sqlstate '45000' set message_text = "Ratio of employee to children off";
+   			CALL die_with_error('Ratio of employee to children off');
 		END IF;
 	END IF;
 END$$

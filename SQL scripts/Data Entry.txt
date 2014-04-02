@@ -60,10 +60,13 @@ INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
 VALUES ("Denny Doop", "555 Fifth Poop", "514 464-0007", "Parent");
 INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
 VALUES ("Denise Doop", "555 Fifth Poop", "514 494-4067", "Parent");
+INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
+VALUES ("Aunt Beatrice", "322 Poop Drive", "514 555-3357", "Guardian");
 
 INSERT INTO PrimaryCaretaker VALUES(1, 1);
 INSERT INTO PrimaryCaretaker VALUES(1, 2);
 INSERT INTO PrimaryCaretaker VALUES(3, 3);
+INSERT INTO PrimaryCaretaker VALUES(3, 8);
 INSERT INTO PrimaryCaretaker VALUES(2, 4);
 INSERT INTO PrimaryCaretaker VALUES(2, 5);
 INSERT INTO PrimaryCaretaker VALUES(4, 6);
