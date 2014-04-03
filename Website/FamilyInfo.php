@@ -136,6 +136,10 @@ session_start();
                         echo "</table>";
                         cleanDatabaseBuffer($con);
                         mysqli_free_result($resultChildren);
+                        ?>
+                        <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
+                        <INPUT NAME= "Hide" TYPE="submit" VALUE="Hide Children Info">
+                        </FORM><?php
                     }
                 }
                 mysqli_free_result($resultFacility);
@@ -143,15 +147,20 @@ session_start();
                 mysqli_free_result($resultGuardians);
                
                 mysqli_close($con);
-                 
                 ?>
                 <FORM METHOD="LINK" ACTION="resetFamilySearch.php">
                 <INPUT NAME= "Reset" TYPE="submit" VALUE="Reset Search">
                 </FORM>
-                <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <INPUT NAME= "ChildInfo" TYPE="submit" VALUE="View Children Info">
-                </FORM>
                 <?php
+                If(!$_REQUEST['ChildInfo'])
+                {   
+                    ?>
+                    <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <INPUT NAME= "ChildInfo" TYPE="submit" VALUE="View Children Info">
+                    </FORM>
+                    <?php
+                }
+                
         }
         else 
         {
