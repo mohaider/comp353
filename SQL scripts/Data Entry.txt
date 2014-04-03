@@ -38,13 +38,15 @@ INSERT INTO ChildOf VALUES ("ASGH 4433 1212", 4);
 INSERT INTO ChildOf VALUES ("QWWE 9948 3333", 4);
 
 INSERT INTO AuthorizedContact VALUES ("514 555-0090", "Granny Smith", "GrandMother", "Yes");
-INSERT INTO IsAuthorized VALUES ("514 555-0090", 1);
 INSERT INTO AuthorizedContact VALUES ("514 099-8879", "Papa Johnh", "GrandFather", "Yes");
-INSERT INTO IsAuthorized VALUES ("514 099-8879", 2);
 INSERT INTO AuthorizedContact VALUES ("514 344-9920", "Uncie Herb", "Uncle", "Yes");
-INSERT INTO IsAuthorized VALUES ("514 344-9920", 3);
 INSERT INTO AuthorizedContact VALUES ("514 566-0089", "Auntie Poop", "Aunt", "Yes");
+INSERT INTO AuthorizedContact VALUES ("514 023-1123", "Iggy Pop", "Uncle", "Yes");
 INSERT INTO IsAuthorized VALUES ("514 566-0089", 1);
+INSERT INTO IsAuthorized VALUES ("514 344-9920", 3);
+INSERT INTO IsAuthorized VALUES ("514 099-8879", 2);
+INSERT INTO IsAuthorized VALUES ("514 555-0090", 1);
+INSERT INTO IsAuthorized VALUES ("514 023-1123", 3);
 
 INSERT INTO Guardian (Name, Address, PhoneNumber, GuardianOrParent)
 VALUES ("Joe Mac", "3003 Parc Ave.", "514 303-5967", "Parent");

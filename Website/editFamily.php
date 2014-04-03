@@ -3,7 +3,7 @@ session_start();
 ?>
 <html>
     <head>
-		<title>Family Information</title>
+		<title>Edit Family Information</title>
     </head>
     <body>
 <?php
@@ -14,7 +14,6 @@ session_start();
                 
                 $LastName = $_SESSION['LastName'];
                 $PhoneNum = $_SESSION['PhoneNum'];
-                
                 
                 if (empty($_SESSION['LastName']) OR empty($_SESSION['PhoneNum'])) 
                 {
@@ -81,18 +80,15 @@ session_start();
                     $resultUpdate = mysqli_query($con, "UPDATE Family"
                             . "                         SET LastName = '$LastName', PhoneNum = '$PhoneNum'"
                             . "                         WHERE ID = '$familyId'");
-                    mysqli_close($con);
+                    
                     if($resultUpdate)
                     {
                         echo "Change Successful";
                     }
-                    ?>
-                    <FORM METHOD="POST" ACTION="FamilyInfo.php">
-                    <INPUT NAME= "editFamily" TYPE="submit" VALUE="Return to Information">
-                    </FORM>
-                    <?php
-                    die();
-                    
+                    else
+                    {
+                         printf("Errormessage: %s\n", mysqli_error($con));
+                    }
                 }
                 mysqli_close($con);
         }
@@ -105,4 +101,7 @@ session_start();
         <br />
         <input name="editFamilyInfo" type="submit" value="Submit" />
 </form>
+<FORM METHOD="POST" ACTION="FamilyInfo.php">
+<INPUT NAME= "returnFamily" TYPE="submit" VALUE="Return to Information">
+</FORM>
 

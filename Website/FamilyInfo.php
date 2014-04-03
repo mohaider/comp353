@@ -1,11 +1,22 @@
 <?php 
 session_start();
+if(isset($_POST["EditAuthor"]))
+{
+    header('Location:editAuthorizedContacts.php');
+    die();
+}
+if(isset($_POST["AddAuthor"]))
+{
+    header('Location: addAuthorizedContacts.php');
+    die();
+}
 ?>
 <html>
     <head>
 		<title>Family Information</title>
     </head>
     <body>
+        <H3> Family Information Page</H3>
 <?php
         include_once("scripts/db_script.php");
         if (isset($_POST["submitFamilyInfo"]) || (isset($_SESSION['LastName']) AND isset($_SESSION['PhoneNum'])))
@@ -44,7 +55,7 @@ session_start();
                 {
                     print_r(mysqli_error($con));
                 }
-                if(mysqli_num_rows($resultFamily) == NULL AND !isset($_SESSION['familyID']))
+                if(mysqli_num_rows($resultFamily) == NULL)
                 {
                     echo "Family doesn't exist!";
                 }
@@ -61,6 +72,7 @@ session_start();
 
                     while($row = mysqli_fetch_array($resultFamily, MYSQL_BOTH))
                     {
+                        $_SESSION['familyID'] = $row[0];
                         $familyId = $row[0];
                         echo "<tr>
                         <td>" . $row[0] . "</td>
@@ -149,6 +161,52 @@ session_start();
                         <INPUT NAME= "Hide" TYPE="submit" VALUE="Hide Children Info">
                         </FORM><?php
                     }
+                    if($_REQUEST['AuthorizedInfo'])
+                    {
+                        $resultAuthor = mysqli_query($con,   "SELECT *\n"
+                                                           . "FROM AuthorizedContact AS ac\n"
+                                                           . "JOIN IsAuthorized\n"
+                                                           . "ON ac.ContactNumber = IsAuthorized.ContactNumber\n"
+                                                           . "WHERE IsAuthorized.FamilyID = '$familyId'");
+                        if(!$resultAuthor)
+                        {
+                            print_r(mysqli_error($con));
+                        }
+                        if(mysqli_num_rows($resultAuthor) == 0)
+                        {
+                            echo "No Emergency Contacts!";
+                        }
+                        else
+                        {
+                            echo "
+                            <h3>Authorized Contacts For Family:</h3>
+                            <table Border='1'>
+                            <tr>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Relation Type</th>
+                            <th>Contact Incase of Emergency</th>
+                            </tr>";
+                            while($row = mysqli_fetch_array($resultAuthor, MYSQL_BOTH))
+                            {
+                                echo "<tr>
+                                <td>" . $row[1] . "</td>
+                                <td>" . $row[0] . "</td>
+                                <td>" . $row[2] . "</td>
+                                <td>" . $row[3] . "</td>
+                                </tr>";
+                            }
+                            echo "</table>";
+                        }
+                        cleanDatabaseBuffer($con);
+                        mysqli_free_result($resultAuthor);
+                        ?>
+                        <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
+                        <INPUT NAME= "HideAuthor" TYPE="submit" VALUE="Hide Contact Info">
+                        <INPUT NAME= "EditAuthor" TYPE="submit" VALUE="Edit Contact Info">
+                        <INPUT NAME= "AddAuthor" TYPE="submit" VALUE="Add New Contact">
+                        </FORM><?php
+                    }
                 }
                 mysqli_free_result($resultFacility);
                 mysqli_free_result($resultFamily);
@@ -159,16 +217,22 @@ session_start();
                 <FORM METHOD="LINK" ACTION="resetFamilySearch.php">
                 <INPUT NAME= "Reset" TYPE="submit" VALUE="Reset Search">
                 </FORM>
+                <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <?php
                 If(!$_REQUEST['ChildInfo'])
                 {   
                     ?>
-                    <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <INPUT NAME= "ChildInfo" TYPE="submit" VALUE="View Children Info">
-                    </FORM>
                     <?php
                 }
-                
+                If(!$_REQUEST['AuthorizedInfo'])
+                {   
+                    ?>
+                    <INPUT NAME= "AuthorizedInfo" TYPE="submit" VALUE="View Contact Info">
+                    
+                    <?php
+                }
+                ?></FORM><?php
         }
         else 
         {
