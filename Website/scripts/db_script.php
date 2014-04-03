@@ -1,7 +1,7 @@
 <?php
 	function db_connect()
 	{
-		$connection = mysqli_connect("localhost", "root", "", "Daycare") or die ("Could not establish connection" . mysql_error());
+		$connection = mysqli_connect("clipper.encs.concordia.ca", "hac353_4", "iggypoop", "hac353_4") or die ("Could not establish connection" . mysql_error());
 		
 		return $connection;
 	}

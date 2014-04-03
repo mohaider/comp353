@@ -1,50 +1,60 @@
 <?php
 session_start();
+include_once('scripts/login_script.php');
 
-	//include_once('scripts/login_script.php');
 	if (isset($_POST["submitFrmLogin"]))
 	{
 		if ($_POST["submitFrmLogin"] === "Submit")
 		{	
-			$empID = intval($_POST["txtEmpIDName"]);
+			$empID = $_POST["txtEmpIDName"];
 			$password = $_POST["txtPasswordName"];
-			//if(login($empID, $password))
-			//{
-				// Connection to the database again to get the acccess level of the employee
-				/*
-				$connection = mysql_connect("localhost", "root", "");
-				if (!$connection)
-					die ("Could not establish connection" . mysql_error());
-				
-				if (!mysql_select_db("Daycare"))
-					die ("Could not connect to database" . mysql_error());
-				$query = "SELECT Role FROM Employee WHERE EmpID = " . $empID . ";";
-				$result = mysql_query($query);
-				$row = mysql_fetch_array($result);
-				
-				$accesslevel = $row['Role'];
-				$_SESSION['access'] = $accesslevel;
-				*/
-				// for testing purposes
-				// for now the redirecting of it is the Full Location
-				
-				$accesslevel = $password;
-				$_SESSION['role'] = $accesslevel;
-				if ( $accesslevel == "CPE" ) {
-					header('Location: CPE.php');
+
+			if ( $empID == ""  ){
+				$message = "Employee ID is Empty";
+				echo "<script type='text/javascript'>alert('$message');</script>";
+			}
+			elseif ( $password == "" ) {
+				$message = "Password Field is Empty";
+				echo "<script type='text/javascript'>alert('$message');</script>";
+			}
+			else{
+				// fields are not empty
+				// Checks Logins and see if it is valid
+				//if(login($empID, $password)){		
+				// Connection to the database again to get the acccess level of the employee 
+				// After Verifiation of EMPID and password
+
+				if (login(intval($empID) , $password)) {	
+					// Continue .ipper.encs.concordia.ca"	
+					$connection = mysql_connect("clipper.encs.concordia.ca", "hac353_4", "iggypoop");
+					if (!$connection)
+						die ("Could not establish connection" . mysql_error());
+					
+					if (!mysql_select_db("hac353_4"))
+						die ("Could not connect to database" . mysql_error());
+					$query = "SELECT Role FROM Employee WHERE EmpID = " . $empID . ";";
+					$result = mysql_query($query);
+					
+					$row = mysql_fetch_row($result);	
+	
+					$accesslevel = $row[0];
+					$_SESSION['access'] = $accesslevel;
+					
+						
+					$_SESSION['role'] = $accesslevel;
+					if ( $accesslevel == "CPE" ) {
+						header('Location: CPE.php');
+					}
+					elseif( $accesslevel == "Manager") {
+						header('Location: Manager.php');
+					}
+					else{
+						header('Location: Employee.php');
+					}	
+					mysql_close($connection);
 				}
-				elseif( $accesslevel == "Manager") {
-					header('Location: Manager.php');
-				}
-				else{
-					header('Location: Employee.php');
-				}
-				
-				
-				
-				//mysql_close($connection);
-				/*header('Location: roomInfo.php');   */
-			//}
+			}
+			
 		}
 	}
 ?>

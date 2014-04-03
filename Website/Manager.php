@@ -2,6 +2,22 @@
 	if (!isset($_SESSION)){
 	session_start();
 	}
+
+	if(isset($_POST["StaffManagement"])){
+		// Redirect		
+	}
+	if(isset($_POST["FacilityManagement"])){
+		// Redirect
+	}
+	if ( isset($_SESSION['role']) ) {
+		$access = $_SESSION['role'];
+		
+		if ( $access == "Employee" ){
+			header('Location: Employee.php');
+		}
+	}
+
+
  ?>
 <html>
 	<head>
@@ -11,7 +27,12 @@
 
 
 <?php include("accesslevel.php"); ?>
-		Manager Page(To add)		
+	<form method="POST" action=''>
+	<input type="submit" name="StaffManagement" value="Staffing Management">
+	<input type="submit" name="FacilityManagement" value="Facility Management">
+
+	</form>
+				
 	</body>
 
 
