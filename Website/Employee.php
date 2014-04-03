@@ -13,6 +13,10 @@
 	if (isset($_POST["StaffInfo"])){
 		// Redirects to Staff Info Page
 	}
+	if (isset($_POST["FamilyInfo"])){
+		header('Location: FamilyInfo.php');
+	}
+
 
 }
  ?>
@@ -27,7 +31,7 @@
 		<form method="POST" action =''> 
 		<input type="submit" name="Registration" value="Register Child">
 		<input type="submit" name="PaymentInfo" value="Payment Information">
-		<input type="submit" name="FaimlyInfo" value="Family Information">
+		<input type="submit" name="FamilyInfo" value="Family Information">
 		<input type="submit" name="ChildInfo" value="Child Information">
 		<input type="submit" name="StaffInfo" value="Staff Information">
 

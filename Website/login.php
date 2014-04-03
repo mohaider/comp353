@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once('scripts/login_script.php');
+include_once("scripts/db_script.php");
 
 	if (isset($_POST["submitFrmLogin"]))
 	{
@@ -26,20 +27,16 @@ include_once('scripts/login_script.php');
 
 				if (login(intval($empID) , $password)) {	
 					// Continue .ipper.encs.concordia.ca"	
-					$connection = mysql_connect("clipper.encs.concordia.ca", "hac353_4", "iggypoop");
-					if (!$connection)
-						die ("Could not establish connection" . mysql_error());
+					$connection = db_connect();
 					
-					if (!mysql_select_db("hac353_4"))
-						die ("Could not connect to database" . mysql_error());
 					$query = "SELECT Role FROM Employee WHERE EmpID = " . $empID . ";";
-					$result = mysql_query($query);
+					$result = mysqli_query($connection, $query);
 					
-					$row = mysql_fetch_row($result);	
+					$row = mysqli_fetch_row($result);	
 	
 					$accesslevel = $row[0];
 					$_SESSION['access'] = $accesslevel;
-					
+					$_SESSION['empID'] = $empID;
 						
 					$_SESSION['role'] = $accesslevel;
 					if ( $accesslevel == "CPE" ) {
@@ -51,7 +48,7 @@ include_once('scripts/login_script.php');
 					else{
 						header('Location: Employee.php');
 					}	
-					mysql_close($connection);
+					mysqli_close($connection);
 				}
 			}
 			

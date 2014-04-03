@@ -31,7 +31,7 @@ session_start();
                 $con = db_connect();
                 
                 # Get EmpID from login
-                $empID = 4;
+                $empID = $_SESSION['empID'];
                 $resultFacility = mysqli_query($con, "SELECT DISTINCT(FacilityID) FROM EmployeeLists WHERE EmpID = '$empID';");
                 if(!$resultFacility)
                 {
