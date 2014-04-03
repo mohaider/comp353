@@ -54,6 +54,12 @@ include_once("scripts/db_script.php");
 			
 		}
 	}
+	else
+	{
+		session_destroy();
+	}
+
+
 ?>
 
 <html>

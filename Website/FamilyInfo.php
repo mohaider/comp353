@@ -70,6 +70,14 @@ session_start();
                     }
                     cleanDatabaseBuffer($con);
                     echo "</table>";
+                    if($_SESSION['access'] == "Manager")
+                    {
+                        ?>
+                        <FORM METHOD="POST" ACTION="editFamily.php">
+                        <INPUT NAME= "editFamily" TYPE="submit" VALUE="Edit">
+                        </FORM>
+                        <?php
+                    }
                     $resultGuardians = mysqli_query($con, "SELECT *\n"
                                                         . "FROM Guardian\n"
                                                         . "JOIN PrimaryCaretaker AS pc\n"
