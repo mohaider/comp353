@@ -50,15 +50,26 @@ if(isset($_SESSION['MediNum']))
             </tr>";
         }
         echo "</table>";
-        $drug = $_POST['deleteMedical'];
-        $resultDelete = mysqli_query($con, "DELETE FROM MedicalSheet WHERE DrugCode = '$drug' AND MedicareNum = '$mediNum'");
+        if(isset($_POST['deleteDrugInfo']))
+        {
+            $drug = $_POST['deleteMedical'];
+            $resultDelete = mysqli_query($con, "DELETE FROM MedicalSheet WHERE DrugCode = '$drug' AND MedicareNum = '$mediNum'");
+            if($resultDelete)
+            {
+                echo "Change Successful";
+            }
+            else
+            {
+                print_r(mysqli_error($con));
+            }
+        }
     }
 }
 ?>
         <form id="MedicalInfo" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
         <?php
-        echo "Choose Guardian To Edit: <select name='deleteMedical'>";
+        echo "Choose Drug: <select name='deleteMedical'>";
         foreach ($drugArray as $value) {
               echo ""
             . "<option value='$value'>'$value'</option>";

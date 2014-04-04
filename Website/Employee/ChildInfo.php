@@ -24,7 +24,7 @@ if(isset($_POST["removeChild"]))
 
 <html>
     <head>
-		<title>Family Information</title>
+		<title>Child Information</title>
     </head>
     <body>
         <H3> Child Information Page</H3>
@@ -85,6 +85,7 @@ if(isset($_POST['submitChildInfo']) || $_SESSION['MediNum'])
 
         while($row = mysqli_fetch_array($resultChildInfo, MYSQL_BOTH))
         {
+            $_SESSION['AgeGroup'] = $row[4];
             echo "<tr>
             <td>" . $row[0] . "</td>
             <td>" . $row[3] . "</td>
@@ -118,7 +119,7 @@ if(isset($_POST['submitChildInfo']) || $_SESSION['MediNum'])
         <th>Age Group</th>
         <th>Extension number</th>
         </tr>";
-
+        $_SESSION['facilityID'] = $facility[0];
         while($row = mysqli_fetch_array($resultRoom, MYSQL_BOTH))
         {
             echo "<tr>
