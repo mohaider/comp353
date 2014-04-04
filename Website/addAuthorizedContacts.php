@@ -41,8 +41,7 @@ session_start();
                  printf("Errormessage: %s\n", mysqli_error($con));
             }
             cleanDatabaseBuffer($con);
-            mysqli_free_result($resultAuthor);
-            echo $familyId;                    
+              
             $resultAuthor = mysqli_query($con, "INSERT INTO IsAuthorized VALUES('$PhoneNum', '$familyId');");
             if($resultAuthor)
             {
@@ -53,7 +52,6 @@ session_start();
                  printf("Errormessage: %s\n", mysqli_error($con));
             }
             cleanDatabaseBuffer($con);
-            mysqli_free_result($resultAuthor);
         }
         mysqli_close($con);
 ?>
