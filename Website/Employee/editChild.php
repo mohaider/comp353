@@ -4,10 +4,10 @@ session_start();
 
 <html>
     <head>
-		<title>Family Information</title>
+		<title>Edit Child Information</title>
     </head>
     <body>
-        <H3> Child Information Page</H3>
+        <H3> Edit Child Page</H3>
 <?php
 include_once("../scripts/db_script.php");
 if(isset($_SESSION['MediNum']))
@@ -77,7 +77,7 @@ if(isset($_SESSION['MediNum']))
             $dob = $_POST['DOB'];
             $gender = $_POST['Gender'];
             $age = $_POST['AgeGroup'];
-            
+            //MYSQL Query
             $resultUpdate = mysqli_query($con, "UPDATE Child"
                     . "                         SET Name = '$name', DOB = '$dob', SEX = '$gender', AgeGroup = '$age'"
                     . "                         WHERE MedicareNum = '$mediNum'");
