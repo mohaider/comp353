@@ -7,7 +7,7 @@ session_start();
     </head>
     <body>
 <?php
-        include_once("scripts/db_script.php");
+        include_once("../scripts/db_script.php");
         if ((isset($_SESSION['LastName']) AND isset($_SESSION['PhoneNum'])))
 	{
                 $field = array('LastName', 'PhoneNum');

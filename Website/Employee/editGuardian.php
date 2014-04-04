@@ -7,7 +7,7 @@ session_start();
     </head>
     <body>
 <?php
-        include_once("scripts/db_script.php");
+        include_once("../scripts/db_script.php");
         if ((isset($_SESSION['familyID'])))
 	{
                 if (empty($_SESSION['familyID'])) 

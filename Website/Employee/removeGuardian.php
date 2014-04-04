@@ -7,7 +7,7 @@ session_start();
     </head>
     <body><H3>Remove Guardian (There must be at least one!)</h3>
 <?php
-        include_once("scripts/db_script.php");
+        include_once("../scripts/db_script.php");
         if ((isset($_SESSION['familyID'])))
 	{
                 if (empty($_SESSION['familyID'])) 

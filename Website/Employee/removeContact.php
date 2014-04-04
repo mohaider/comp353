@@ -5,9 +5,9 @@ session_start();
     <head>
 		<title>Edit Family Information</title>
     </head>
-    <body>
+    <body><h3>Remove Emergency Contacts</h3>
 <?php
-        include_once("scripts/db_script.php");
+        include_once("../scripts/db_script.php");
         if ((isset($_SESSION['familyID'])))
 	{
                 if (empty($_SESSION['familyID'])) 
@@ -46,7 +46,7 @@ session_start();
                     $namesArray = array();
                     while($row = mysqli_fetch_array($resultAuthor, MYSQL_BOTH))
                     {
-                        $namesArray[] = $row[1];
+                        $numArray[] = $row[0];
                         echo "<tr>
                         <td>" . $row[1] . "</td>
                         <td>" . $row[0] . "</td>
@@ -58,30 +58,16 @@ session_start();
                 }
                 cleanDatabaseBuffer($con);
                 mysqli_free_result($resultAuthor);
-                
-                $field = array('Name', 'PhoneNum', 'Relation', 'Emergency');
-                
-                if(isset($_POST['editContactInfo']))
+                 
+                if(isset($_POST['removeContactInfo']))
                 {
-                    foreach($field as $index)
-                    {
-                        if (empty($_POST[$index])) 
-                        {
-                            die("Empty Text Field: ". $index . " Push back button");
-                        }
-                    }
-                    
-                    $Name = $_POST['Name'];
-                    $PhoneNum = $_POST['PhoneNum'];
-                    $Relation = $_POST['Relation'];
-                    $Emergency = $_POST['Emergency'];
                     $edit = $_POST['editContact'];
-                    $resultUpdate = mysqli_query($con, "UPDATE AuthorizedContact\n"
-                                                     . "SET ContactNumber = '$PhoneNum', Name = '$Name', TypeOfRelationship = '$Relation', IsEmergencyContact = '$Emergency'\n"
-                                                     . "WHERE Name = '$edit';");
+                    $resultUpdate = mysqli_query($con, "DELETE FROM AuthorizedContact WHERE ContactNumber = '$edit';");
                     if($resultUpdate)
                     {
                         echo "Change Successful";
+                        cleanDatabaseBuffer($con);
+                        $resultDelete = mysqli_query($con, "DELETE FROM IsAuthorized WHERE ContactNumber = '$edit';");
                     }
                     else
                     {
@@ -96,32 +82,16 @@ session_start();
 
 <?php
  echo "Choose Contact To Edit: <select name='editContact'>";
-foreach ($namesArray as $value) {
+foreach ($numArray as $value) {
       echo ""
     . "<option value='$value'>'$value'</option>";
 }
 echo "</select>";
 ?>
 <br />
-Contact Name: <input name="Name" type="text" id="Name" />
-<br />
-New Phone Number: <input name="PhoneNum" type="text" id="PhoneNum" />
-<br />
-Relation Type <select name="Relation">
-    <option value="GrandMother">GrandMother</option>
-    <option value="GrandFather">GrandFather</option>
-    <option value="Aunt">Aunt</option>
-    <option value="Uncle">Uncle</option>
-    <option value="Other">Other</option>
-    </select>
-<br />
-Contact Incase of Emergency: <select name="Emergency">
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-    </select>
-<br />
-<input name="editContactInfo" type="submit" value="Submit" />
+<input name="removeContactInfo" type="submit" value="Remove" />
 </form>
 <FORM METHOD="POST" ACTION="FamilyInfo.php">
 <INPUT NAME= "returnFamily" TYPE="submit" VALUE="Return to Information">
+<INPUT NAME= "returnEmployee" TYPE="submit" VALUE="Return to Menu">
 </FORM>

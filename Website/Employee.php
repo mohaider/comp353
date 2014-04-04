@@ -8,13 +8,13 @@
 		// Redirect to Payment Info Page
 	}
 	if (isset($_POST["ChildInfo"])){
-		// Redirects to Child Info Page
+		header('Location: ChildInfo.php');
 	}
 	if (isset($_POST["StaffInfo"])){
 		// Redirects to Staff Info Page
 	}
 	if (isset($_POST["FamilyInfo"])){
-		header('Location: FamilyInfo.php');
+		header('Location: \Employee\FamilyInfo.php');
 	}
 
 
@@ -22,7 +22,7 @@
  ?>
 <html>
 	<head>
-		<title>Emploee Home Page</title>
+		<title>Employee Home Page</title>
 	</head>
 	<body>
 

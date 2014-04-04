@@ -8,7 +8,7 @@ session_start();
     <body>
         <H3>Add Guardian to Family</H3>
 <?php
-include_once("scripts/db_script.php");
+include_once("../scripts/db_script.php");
 if ((isset($_SESSION['familyID'])))
 {
         if (empty($_SESSION['familyID'])) 

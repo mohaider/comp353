@@ -30,6 +30,11 @@ if(isset($_POST["removeGuardian"]))
     header('Location: removeGuardian.php');
     die();
 }
+if(isset($_POST["returnEmployee"]))
+{
+    header('Location: ../Employee.php');
+    die();
+}
 ?>
 <html>
     <head>
@@ -38,7 +43,7 @@ if(isset($_POST["removeGuardian"]))
     <body>
         <H3> Family Information Page</H3>
 <?php
-        include_once("scripts/db_script.php");
+        include_once("../scripts/db_script.php");
         if (isset($_POST["submitFamilyInfo"]) || (isset($_SESSION['LastName']) AND isset($_SESSION['PhoneNum'])))
 	{
                 $field = array('LastName', 'PhoneNum');
@@ -277,5 +282,9 @@ if(isset($_POST["removeGuardian"]))
         }
 
 ?>
+        
+<FORM METHOD="POST" ACTION="">
+<INPUT NAME= "returnEmployee" TYPE="submit" VALUE="Return to Menu">
+</FORM>
 	</body>
 </html>

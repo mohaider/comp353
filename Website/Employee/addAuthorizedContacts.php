@@ -8,7 +8,7 @@ session_start();
     <body>
         <H3>Add New Emergency Contact</H3>
 <?php
-        include_once("scripts/db_script.php");
+        include_once("../scripts/db_script.php");
         if (empty($_SESSION['familyID'])) 
         {
             die("Page missing family data from FamilyInfo.php");
