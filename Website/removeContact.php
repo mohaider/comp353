@@ -46,7 +46,7 @@ session_start();
                     $namesArray = array();
                     while($row = mysqli_fetch_array($resultAuthor, MYSQL_BOTH))
                     {
-                        $namesArray[] = $row[1];
+                        $numArray[] = $row[0];
                         echo "<tr>
                         <td>" . $row[1] . "</td>
                         <td>" . $row[0] . "</td>
@@ -62,10 +62,12 @@ session_start();
                 if(isset($_POST['removeContactInfo']))
                 {
                     $edit = $_POST['editContact'];
-                    $resultUpdate = mysqli_query($con, "DELETE FROM AuthorizedContact WHERE Name = '$edit';");
+                    $resultUpdate = mysqli_query($con, "DELETE FROM AuthorizedContact WHERE ContactNumber = '$edit';");
                     if($resultUpdate)
                     {
                         echo "Change Successful";
+                        cleanDatabaseBuffer($con);
+                        $resultDelete = mysqli_query($con, "DELETE FROM IsAuthorized WHERE ContactNumber = '$edit';");
                     }
                     else
                     {
@@ -80,7 +82,7 @@ session_start();
 
 <?php
  echo "Choose Contact To Edit: <select name='editContact'>";
-foreach ($namesArray as $value) {
+foreach ($numArray as $value) {
       echo ""
     . "<option value='$value'>'$value'</option>";
 }
