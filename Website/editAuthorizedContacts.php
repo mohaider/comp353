@@ -8,15 +8,9 @@ session_start();
     <body>
 <?php
         include_once("scripts/db_script.php");
-        if ((isset($_SESSION['LastName']) AND isset($_SESSION['PhoneNum'])))
+        if ((isset($_SESSION['familyID'])))
 	{
-                $field = array('LastName', 'PhoneNum');
-                
-                $LastName = $_SESSION['LastName'];
-                $PhoneNum = $_SESSION['PhoneNum'];
-                
-                
-                if (empty($_SESSION['LastName']) OR empty($_SESSION['PhoneNum'])) 
+                if (empty($_SESSION['familyID'])) 
                 {
                     die("Page missing family data from FamilyInfo.php");
                 }
@@ -24,14 +18,6 @@ session_start();
                 
                 $con = db_connect();
                 
-                # Get EmpID from login
-                $empID = $_SESSION['empID'];
-                $resultFacility = mysqli_query($con, "SELECT DISTINCT(FacilityID) FROM EmployeeLists WHERE EmpID = '$empID';");
-                if(!$resultFacility)
-                {
-                    print_r(mysqli_error($con));
-                }
-                $facility = mysqli_fetch_row($resultFacility);
                 $familyId = $_SESSION['familyID'];
                 $resultAuthor = mysqli_query($con,   "SELECT *\n"
                                                            . "FROM AuthorizedContact AS ac\n"

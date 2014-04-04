@@ -122,6 +122,11 @@ if(isset($_POST["AddAuthor"]))
                     }
                     cleanDatabaseBuffer($con);
                     echo "</table>";
+                    ?>
+                    <FORM METHOD="POST" ACTION="editGuardian.php">
+                    <INPUT NAME= "editGuardian" TYPE="submit" VALUE="Edit">
+                    </FORM>
+                    <?php
                     if($_REQUEST['ChildInfo'])
                     {
                         $resultChildren = mysqli_query($con, "SELECT *\n"
