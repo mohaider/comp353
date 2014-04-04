@@ -15,6 +15,11 @@ if(isset($_POST["roomChild"]))
     header('Location: roomChange.php');
     die();
 }
+if(isset($_POST["removeChild"]))
+{
+    header('Location: removeFromFacility.php');
+    die();
+}
 ?>
 
 <html>
@@ -94,6 +99,7 @@ if(isset($_POST['submitChildInfo']) || $_SESSION['MediNum'])
         <FORM METHOD="POST" ACTION="">
         <INPUT NAME= "editChild" TYPE="submit" VALUE="Edit">
         <INPUT NAME= "emergencyChild" TYPE="submit" VALUE="Medical Information">
+        <INPUT NAME= "removeChild" TYPE="submit" VALUE="Remove From Facility">
         </FORM>
         <?php
         //MYSQL Query
@@ -107,6 +113,7 @@ if(isset($_POST['submitChildInfo']) || $_SESSION['MediNum'])
         <h3>Room Information:</h3>
         <table Border='1'>
         <tr>
+        <th>Facility ID</th>
         <th>Room Number</th>
         <th>Age Group</th>
         <th>Extension number</th>
@@ -115,6 +122,7 @@ if(isset($_POST['submitChildInfo']) || $_SESSION['MediNum'])
         while($row = mysqli_fetch_array($resultRoom, MYSQL_BOTH))
         {
             echo "<tr>
+            <td>" . $facility[0] . "</td>
             <td>" . $row[0] . "</td>
             <td>" . $row[1] . "</td>
             <td>" . $row[2] . "</td>
