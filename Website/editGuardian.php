@@ -50,7 +50,7 @@ session_start();
                 }
                 cleanDatabaseBuffer($con);
                 echo "</table>";
-                mysqli_free_result($resultAuthor);
+                mysqli_free_result($resultGuardians);
                 
                 $field = array('Name', 'Address', 'PhoneNum', 'Type');
                 
@@ -75,7 +75,6 @@ session_start();
                     if($resultUpdate)
                     {
                         echo "Change Successful";
-                        printf("Errormessage: %s\n", mysqli_error($con));
                     }
                     else
                     {
