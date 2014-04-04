@@ -8,13 +8,13 @@
 		// Redirect to Payment Info Page
 	}
 	if (isset($_POST["ChildInfo"])){
-		header('Location: ChildInfo.php');
+		header('Location: Employee\ChildInfo.php');
 	}
 	if (isset($_POST["StaffInfo"])){
 		// Redirects to Staff Info Page
 	}
 	if (isset($_POST["FamilyInfo"])){
-		header('Location: \Employee\FamilyInfo.php');
+		header('Location: Employee\FamilyInfo.php');
 	}
 
 
