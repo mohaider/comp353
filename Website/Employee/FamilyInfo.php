@@ -153,7 +153,26 @@ if(isset($_POST["returnEmployee"]))
                     <INPUT NAME= "addGuardian" TYPE="submit" VALUE="Add Guardian">
                     <INPUT NAME= "removeGuardian" TYPE="submit" VALUE="Remove Guardian">
                     </FORM>
+                    
+                    <FORM METHOD="LINK" ACTION="resetFamilySearch.php">
+                    <INPUT NAME= "Reset" TYPE="submit" VALUE="Reset Search">
+                    </FORM>
+                    <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <?php
+                    If(!$_REQUEST['ChildInfo'])
+                    {   
+                        ?>
+                        <INPUT NAME= "ChildInfo" TYPE="submit" VALUE="View Children Info">
+                        <?php
+                    }
+                    If(!$_REQUEST['AuthorizedInfo'])
+                    {   
+                        ?>
+                        <INPUT NAME= "AuthorizedInfo" TYPE="submit" VALUE="View Contact Info">
+
+                        <?php
+                    }
+                    ?></FORM><?php
                     if($_REQUEST['ChildInfo'])
                     {
                         $resultChildren = mysqli_query($con, "SELECT *\n"
@@ -246,26 +265,6 @@ if(isset($_POST["returnEmployee"]))
                 mysqli_free_result($resultFacility);
                
                 mysqli_close($con);
-                ?>
-                <FORM METHOD="LINK" ACTION="resetFamilySearch.php">
-                <INPUT NAME= "Reset" TYPE="submit" VALUE="Reset Search">
-                </FORM>
-                <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <?php
-                If(!$_REQUEST['ChildInfo'])
-                {   
-                    ?>
-                    <INPUT NAME= "ChildInfo" TYPE="submit" VALUE="View Children Info">
-                    <?php
-                }
-                If(!$_REQUEST['AuthorizedInfo'])
-                {   
-                    ?>
-                    <INPUT NAME= "AuthorizedInfo" TYPE="submit" VALUE="View Contact Info">
-                    
-                    <?php
-                }
-                ?></FORM><?php
         }
         else 
         {
