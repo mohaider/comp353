@@ -102,7 +102,7 @@ New Phone Number: <input name="PhoneNum" type="text" id="PhoneNum" />
 <br />
 New Address: <input name="Address" type="text" id="Address" />
 <br />
-Contact Incase of Emergency: <select name="Type">
+Guardian Type: <select name="Type">
     <option value="Parent">Parent</option>
     <option value="Guardian">Guardian</option>
     </select>

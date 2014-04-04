@@ -10,6 +10,16 @@ if(isset($_POST["AddAuthor"]))
     header('Location: addAuthorizedContacts.php');
     die();
 }
+if(isset($_POST["addGuardian"]))
+{
+    header('Location: addGuardians.php');
+    die();
+}
+if(isset($_POST["editGuardian"]))
+{
+    header('Location: editGuardian.php');
+    die();
+}
 ?>
 <html>
     <head>
@@ -123,8 +133,9 @@ if(isset($_POST["AddAuthor"]))
                     cleanDatabaseBuffer($con);
                     echo "</table>";
                     ?>
-                    <FORM METHOD="POST" ACTION="editGuardian.php">
+                    <FORM METHOD="POST" ACTION="">
                     <INPUT NAME= "editGuardian" TYPE="submit" VALUE="Edit">
+                    <INPUT NAME= "addGuardian" TYPE="submit" VALUE="Add Guardian">
                     </FORM>
                     <?php
                     if($_REQUEST['ChildInfo'])
@@ -212,10 +223,10 @@ if(isset($_POST["AddAuthor"]))
                         <INPUT NAME= "AddAuthor" TYPE="submit" VALUE="Add New Contact">
                         </FORM><?php
                     }
+                    mysqli_free_result($resultFamily);
+                    mysqli_free_result($resultGuardians);
                 }
                 mysqli_free_result($resultFacility);
-                mysqli_free_result($resultFamily);
-                mysqli_free_result($resultGuardians);
                
                 mysqli_close($con);
                 ?>
