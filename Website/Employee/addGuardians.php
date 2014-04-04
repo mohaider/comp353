@@ -60,13 +60,13 @@ if ((isset($_SESSION['familyID'])))
 ?>
 <form id="GuardianInfo" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <br />
-Contact Name: <input name="Name" type="text" id="Name" />
+Guardian Name: <input name="Name" type="text" id="Name" />
 <br />
 New Phone Number: <input name="PhoneNum" type="text" id="PhoneNum" />
 <br />
 New Address: <input name="Address" type="text" id="Address" />
 <br />
-Contact Incase of Emergency: <select name="Type">
+Guardian Type: <select name="Type">
     <option value="Parent">Parent</option>
     <option value="Guardian">Guardian</option>
     </select>

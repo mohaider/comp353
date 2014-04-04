@@ -93,5 +93,4 @@ echo "</select>";
 </form>
 <FORM METHOD="POST" ACTION="FamilyInfo.php">
 <INPUT NAME= "returnFamily" TYPE="submit" VALUE="Return to Information">
-<INPUT NAME= "returnEmployee" TYPE="submit" VALUE="Return to Menu">
 </FORM>

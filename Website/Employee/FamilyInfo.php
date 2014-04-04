@@ -159,13 +159,13 @@ if(isset($_POST["returnEmployee"]))
                     </FORM>
                     <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <?php
-                    If(!$_REQUEST['ChildInfo'])
+                    If(!isset($_REQUEST['ChildInfo']))
                     {   
                         ?>
                         <INPUT NAME= "ChildInfo" TYPE="submit" VALUE="View Children Info">
                         <?php
                     }
-                    If(!$_REQUEST['AuthorizedInfo'])
+                    If(!isset($_REQUEST['AuthorizedInfo']))
                     {   
                         ?>
                         <INPUT NAME= "AuthorizedInfo" TYPE="submit" VALUE="View Contact Info">
@@ -173,7 +173,7 @@ if(isset($_POST["returnEmployee"]))
                         <?php
                     }
                     ?></FORM><?php
-                    if($_REQUEST['ChildInfo'])
+                    if(isset($_REQUEST['ChildInfo']))
                     {
                         $resultChildren = mysqli_query($con, "SELECT *\n"
                                                            . "FROM Child\n"
@@ -212,7 +212,7 @@ if(isset($_POST["returnEmployee"]))
                         <INPUT NAME= "Hide" TYPE="submit" VALUE="Hide Children Info">
                         </FORM><?php
                     }
-                    if($_REQUEST['AuthorizedInfo'])
+                    if(isset($_REQUEST['AuthorizedInfo']))
                     {
                         $resultAuthor = mysqli_query($con,   "SELECT *\n"
                                                            . "FROM AuthorizedContact AS ac\n"
