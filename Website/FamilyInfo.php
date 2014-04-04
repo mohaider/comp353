@@ -10,6 +10,11 @@ if(isset($_POST["AddAuthor"]))
     header('Location: addAuthorizedContacts.php');
     die();
 }
+if(isset($_POST["RemoveAuthor"]))
+{
+    header('Location: removeContact.php');
+    die();
+}
 if(isset($_POST["addGuardian"]))
 {
     header('Location: addGuardians.php');
@@ -18,6 +23,11 @@ if(isset($_POST["addGuardian"]))
 if(isset($_POST["editGuardian"]))
 {
     header('Location: editGuardian.php');
+    die();
+}
+if(isset($_POST["removeGuardian"]))
+{
+    header('Location: removeGuardian.php');
     die();
 }
 ?>
@@ -136,6 +146,7 @@ if(isset($_POST["editGuardian"]))
                     <FORM METHOD="POST" ACTION="">
                     <INPUT NAME= "editGuardian" TYPE="submit" VALUE="Edit">
                     <INPUT NAME= "addGuardian" TYPE="submit" VALUE="Add Guardian">
+                    <INPUT NAME= "removeGuardian" TYPE="submit" VALUE="Remove Guardian">
                     </FORM>
                     <?php
                     if($_REQUEST['ChildInfo'])
@@ -221,6 +232,7 @@ if(isset($_POST["editGuardian"]))
                         <INPUT NAME= "HideAuthor" TYPE="submit" VALUE="Hide Contact Info">
                         <INPUT NAME= "EditAuthor" TYPE="submit" VALUE="Edit Contact Info">
                         <INPUT NAME= "AddAuthor" TYPE="submit" VALUE="Add New Contact">
+                        <INPUT NAME= "RemoveAuthor" TYPE="submit" VALUE="Remove Contact">
                         </FORM><?php
                     }
                     mysqli_free_result($resultFamily);
