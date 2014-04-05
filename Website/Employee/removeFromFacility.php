@@ -33,14 +33,17 @@ if(isset($_SESSION['MediNum']))
         print_r(mysqli_error($con));
     }
     $Dates = mysqli_fetch_row($resultDate);
-    $today = date("Ymd");
+    $today = date("Y-m-d");
     echo "<p>Begin date: " .$Dates[0] . "</p>";
     echo "<p>End dates: " .$Dates[1]. "</p>";
     echo "<p>Today's date: " .$today. "</p>";
-    $diff = abs(strtotime($today) - strtotime($Dates[0]));
-
-    $years = floor($diff / (365*60*60*24));
-    if($years < 1 && isset($_POST['Remove']))
+    $diffCurrent = abs(strtotime($today) - strtotime($Dates[0]));
+    $curYears = floor($diffCurrent / (365*60*60*24));
+    
+    $diffExp = abs(strtotime($Dates[1]) - strtotime($Dates[0]));
+    $expYears = floor($diffExp / (365*60*60*24));
+    
+    if($curYears < $expYears && isset($_POST['Remove']))
     {
         echo "Registration canceled early. A $50 charge will be added to your invoice.";
         
