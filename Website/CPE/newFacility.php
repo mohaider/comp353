@@ -7,6 +7,8 @@ if (isset($_POST['FacilityManagement'])) {
     die();
 }
 
+
+
 $typeHome = "Home";
 $typeCenter = "Center";
 global $typeHome;
@@ -23,21 +25,22 @@ global $typeCenter;
 
     </head>
     <body>
-        <?php
-        include_once("../scripts/db_script.php");
-        $con = db_connect();
-        
-        ?>
-        <?php
-// define variables and set to empty values
-$typeErr = $addressErr = $phoneNumErr = "";
-$daycareType = $address = $phoneNum =  "";
 
+        <?php
+                
+// define variables and set to empty values
+$typeErr = $addressErr = $phoneNumErr =$dbError = "";
+$daycareType = $address = $phoneNum =  "";
+$completeInfo = true;
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
    $daycareType = test_input($_POST["centertype"]);
    if (empty($_POST["address"]))
-     {$addressErr = "Address is required";}
+     {
+       $addressErr = "Address is required";
+       $completeInfo = false;
+       
+     }
    else
      {
      $address = test_input($_POST["address"]);
@@ -45,9 +48,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
      
 
    if (empty($_POST["phoneNum"]))
-     {$phoneNumErr = "Gender is required";}
+     {
+       $phoneNumErr = "Phone# is required";
+       $completeInfo = false;
+       
+     }
    else
-     {$phoneNum = test_input($_POST["phoneNum"]);}
+     {
+       $phoneNum = test_input($_POST["phoneNum"]);
+       
+     }
+     
+     if ($completeInfo)
+     {
+         $args = array("Type" => $daycareType, "Address" => $address, "PhoneNum" => $phoneNum);
+        $insertionResults= writeToDatabase($args);
+header('Location:facilityManagement.php');
+    die();
+     }
+     
+     
 }
 
 function test_input($data)
@@ -60,12 +80,22 @@ function test_input($data)
 
 function writeToDatabase($data)
 {
-    
+    include_once("../scripts/db_script.php");
+        $con = db_connect();
+        //mysql statement to insert into facility table
+        $sql = sprintf(
+    'INSERT INTO facility(%s) VALUES ("%s")',
+    implode(',',array_keys($data)),
+    implode('","',array_values($data))
+);
+     $insertionResults = mysqli_query($con, $sql);
+   return mysqli_error($con);
 }
 ?>
 
         
 <h2>New Facility Creation</h2>
+<span class="error"><?php echo $dbError;?></span>
 <p><span class="error">* required field.</span></p>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
     Facility Type: <select name="centertype">
@@ -84,16 +114,6 @@ function writeToDatabase($data)
 </form>
 
 
-
-<?php
-//todo remove this  
-echo "<h2>Your Input:</h2>";
-echo $daycareType;
-echo "<br>";
-echo $address;
-echo "<br>";
-echo $phoneNum;
-?>
 
         <FORM METHOD="POST" ACTION=''>
             <INPUT NAME= "FacilityManagement" TYPE="submit" VALUE="Return to Facility Management">

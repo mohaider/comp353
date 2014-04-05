@@ -54,7 +54,7 @@ if (isset($_POST['returnToCPEMenu'])) {
 
 
         //check if post variables aren't set 
-        if (!isset($_POST['facilitySubmissionEdit']) & !isset($_POST['submitFacilityMods'])) {
+        if (!isset($_POST['facilitySubmissionEdit']) & !isset($_POST['submitFacilityMods']) &!isset($_POST['terminateFacility']) ) {
            //MYSQL query for facility information display 
             $existingFacQuery = " SELECT * FROM FACILITY  ";
             //mySQL query for finding the number of rooms in a facility
@@ -123,6 +123,16 @@ if (isset($_POST['returnToCPEMenu'])) {
             header('Location:facilityManagement.php');
             
         }
+        else if (isset($_POST['terminateFacility']))
+        {
+            $con = db_connect();
+            $facilityID = $_POST['facilityId'];
+            //mysql query to delete facility where id = facilityID
+            $resultDelete = mysqli_query($con,"DELETE FROM facility WHERE ID =".$facilityID);
+            db_close($con);
+            header('Location:facilityManagement.php');
+            
+        }
             else {
             echo "<form name='editFacilityMods' method='POST' action=" . $_SERVER['PHP_SELF'] .">";
             //<input type='radio' name='facilitySelected' id='facilityRadioButton' value=" . $row['ID'] . ">
@@ -132,6 +142,7 @@ if (isset($_POST['returnToCPEMenu'])) {
             echo "New Facility tel#: <input type='text' name='newPhoneNumber' id='telNo'></br>";
             
             echo " <input type='submit' name='submitFacilityMods' value='Update Facility Information'>";
+            echo "<input type='submit' name='terminateFacility' value='Terminate Facility'>";
             echo"</form></br>";
                         
             
