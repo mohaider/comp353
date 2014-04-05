@@ -1,7 +1,15 @@
 <?php
 if (!isset($_SESSION))
     session_start();
-
+        if(!isset($_SESSION['role']))
+{
+    header('../login.php');
+    die();
+}
+        if ($_SESSION['role'] != "CPE") {
+        header('Location:../'.$_SESSION['role'].'PHP');
+        die();
+    }
 //if (isset($_POST['facilitySubmissionEdit'])) {
 //    header('Location:facilityManagement.php');
 //    die();
@@ -54,7 +62,8 @@ if (isset($_POST['returnToCPEMenu'])) {
 
 
         //check if post variables aren't set 
-        if (!isset($_POST['facilitySubmissionEdit']) & !isset($_POST['submitFacilityMods']) &!isset($_POST['terminateFacility']) ) {
+        if (!isset($_POST['facilitySubmissionEdit']) & !isset($_POST['submitFacilityMods'])
+                &!isset($_POST['terminateFacility']) ) {
            //MYSQL query for facility information display 
             $existingFacQuery = " SELECT * FROM FACILITY  ";
             //mySQL query for finding the number of rooms in a facility
@@ -81,7 +90,8 @@ if (isset($_POST['returnToCPEMenu'])) {
 
 
             $idArray = array();
-            while ($row = mysqli_fetch_array($existingFacilities, MYSQL_BOTH)) {
+            while ($row = mysqli_fetch_array($existingFacilities, MYSQL_BOTH)) 
+                {
 
 
                 //fetch the room count
@@ -127,6 +137,12 @@ if (isset($_POST['returnToCPEMenu'])) {
         {
             $con = db_connect();
             $facilityID = $_POST['facilityId'];
+            //mySql query to remove rooms that are housed in the facility
+            
+            $deleteRoomSQL = "DELETE FROM ROOM \n"
+                    . "WHERE RoomNum IN (SELECT FROM houses "
+                    . " JOIN FACILITY ON houses.FacilityID =".$facilityID.")";
+            cleanDatabaseBuffer($con);
             //mysql query to delete facility where id = facilityID
             $resultDelete = mysqli_query($con,"DELETE FROM facility WHERE ID =".$facilityID);
             db_close($con);

@@ -1,12 +1,24 @@
 <?php 
 	if (!isset($_SESSION)){
 	session_start();
-	}
+        }
+        if(!isset($_SESSION['role']))
+{
+    header('../login.php');
+    die();
+}
+        if ($_SESSION['role'] != "CPE") {
+        header('Location:'.$_SESSION['role'].'PHP');
+        die();
+    }
+
 	if (isset($_POST['Managerfunc'])){
-		// Redirect
+            header('Location:')
+            die();
 	}
 	if (isset($_POST['FacilityManagement'])){
-		// Redirect
+            header('Location:CPE/facilityManagement.php');
+            die();
 	}
 	if (isset($_POST['ChildFacRelo'])){
 		// Redirect
