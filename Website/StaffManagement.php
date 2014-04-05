@@ -11,7 +11,7 @@
 		header('Location: ExistingEmployee.php');
 	}	
 	if(isset($_POST["Scheduling"])){
-		// ??
+		header('Location: EmployeeScheduling.php');
 	}
 	
 

@@ -5,7 +5,7 @@
 		// redirec to Registration Page
 	}
 	if (isset($_POST["PaymentInfo"])){
-		// Redirect to Payment Info Page
+		header('Location: Employee\PaymentInfo.php');
 	}
 	if (isset($_POST["ChildInfo"])){
 		header('Location: Employee\ChildInfo.php');
@@ -15,6 +15,9 @@
 	}
 	if (isset($_POST["FamilyInfo"])){
 		header('Location: Employee\FamilyInfo.php');
+	}
+	if (isset($_POST["Schedule"])){
+		header('Location: ViewSchedule.php');
 	}
 
 
