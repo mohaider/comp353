@@ -54,19 +54,43 @@ if(isset($_POST['submitChildInfo']) || $_SESSION['MediNum'])
     $con = db_connect();
     
     $empID = $_SESSION['empID'];
+    
     //MYSQL Query
-    $resultFacility = mysqli_query($con, "SELECT DISTINCT(FacilityID) FROM EmployeeLists WHERE EmpID = '$empID';");
-    if(!$resultFacility)
+    
+    if($_SESSION['role'] == "CPE")
     {
-        print_r(mysqli_error($con));
+        //MYSQL Query
+        $resultFacility = mysqli_query($con, "SELECT DISTINCT(FacilityID) FROM RegistrationSheet WHERE MedicareNum = '$mediNum';");
+        if(!$resultFacility)
+        {
+            print_r(mysqli_error($con));
+        }
+        $facility = mysqli_fetch_row($resultFacility);
+        $resultChildInfo = mysqli_query($con, "SELECT * \n"
+                                            . "FROM Child\n"
+                                            . "JOIN RegistrationSheet\n"
+                                            . "ON Child.MedicareNum = RegistrationSheet.MedicareNum\n"
+                                            . "WHERE Child.MedicareNum = '$mediNum'");
+        $_SESSION['facilityID'] = $facility[0];
     }
-    $facility = mysqli_fetch_row($resultFacility);
-    //MYSQL Query
-    $resultChildInfo = mysqli_query($con, "SELECT * \n"
-                                        . "FROM Child\n"
-                                        . "JOIN RegistrationSheet\n"
-                                        . "ON Child.MedicareNum = RegistrationSheet.MedicareNum\n"
-                                        . "WHERE RegistrationSheet.FacilityID = '$facility[0]' AND Child.MedicareNum = '$mediNum'");
+    else
+    {
+        //MYSQL Query
+        $resultFacility = mysqli_query($con, "SELECT DISTINCT(FacilityID) FROM EmployeeLists WHERE EmpID = '$empID';");
+        if(!$resultFacility)
+        {
+            print_r(mysqli_error($con));
+        }
+        $facility = mysqli_fetch_row($resultFacility);
+        $resultChildInfo = mysqli_query($con, "SELECT * \n"
+                                            . "FROM Child\n"
+                                            . "JOIN RegistrationSheet\n"
+                                            . "ON Child.MedicareNum = RegistrationSheet.MedicareNum\n"
+                                            . "WHERE RegistrationSheet.FacilityID = '$facility[0]' AND Child.MedicareNum = '$mediNum'");
+    
+        
+        $_SESSION['facilityID'] = $facility[0];
+    }
     if(!$resultChildInfo)
     {
         print_r(mysqli_error($con));
@@ -124,7 +148,6 @@ if(isset($_POST['submitChildInfo']) || $_SESSION['MediNum'])
         <th>Age Group</th>
         <th>Extension number</th>
         </tr>";
-        $_SESSION['facilityID'] = $facility[0];
         while($row = mysqli_fetch_array($resultRoom, MYSQL_BOTH))
         {
             echo "<tr>

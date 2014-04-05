@@ -74,8 +74,19 @@ if(isset($_POST["returnEmployee"]))
                     print_r(mysqli_error($con));
                 }
                 $facility = mysqli_fetch_row($resultFacility);
+                if($_SESSION['role'] == "CPE")
+                {
+                    echo "<p>CPE</p>";
+                    $resultFamily = mysqli_query($con, "SELECT *"
+                            . "                         FROM Family"
+                            . "                         WHERE LastName = '$LastName' AND PhoneNum = '$PhoneNum'");
+                }
+                else
+                {
+                    echo "<p>OTHER</p>";
+                    $resultFamily = mysqli_query($con, "CALL getFamilyFromFacility('$facility[0]', '$LastName', '$PhoneNum');");
+                }
                 
-                $resultFamily = mysqli_query($con, "CALL getFamilyFromFacility('$facility[0]', '$LastName', '$PhoneNum');");
                 if(!$resultFamily)
                 {
                     print_r(mysqli_error($con));
@@ -153,9 +164,7 @@ if(isset($_POST["returnEmployee"]))
                     <INPUT NAME= "removeGuardian" TYPE="submit" VALUE="Remove Guardian">
                     </FORM>
                     
-                    <FORM METHOD="LINK" ACTION="resetFamilySearch.php">
-                    <INPUT NAME= "Reset" TYPE="submit" VALUE="Reset Search">
-                    </FORM>
+                    
                     <FORM METHOD="POST" ACTION="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <?php
                     If(!isset($_REQUEST['ChildInfo']))
@@ -280,7 +289,9 @@ if(isset($_POST["returnEmployee"]))
         }
 
 ?>
-        
+        <FORM METHOD="LINK" ACTION="resetFamilySearch.php">
+                    <INPUT NAME= "Reset" TYPE="submit" VALUE="Reset Search">
+                    </FORM>
 <FORM METHOD="POST" ACTION="">
 <INPUT NAME= "returnEmployee" TYPE="submit" VALUE="Return to Menu">
 </FORM>

@@ -76,6 +76,7 @@ INSERT INTO PrimaryCaretaker VALUES(4, 7);
 
 INSERT INTO Facility VALUES (0 , "Home", "9360 Place Honore-Primeau", "514 555-0192");
 INSERT INTO Facility VALUES (0 , "Center", "1220 AVE. PineWood", "514 932-0091");
+INSERT INTO Facility VALUES (0 , "Center", "2234 Green Grove", "514 868-0091");
 
 INSERT INTO Employee VALUES (0, "Joey Jojo", "2335 Poop Lane", "Employee", NOW(), NULL, "123029294");
 INSERT INTO EmployeeLists VALUES (1, 2);
@@ -89,7 +90,12 @@ INSERT INTO Employee VALUES (0, "Boop Bop", "One Infinite Loop", "Employee", NOW
 INSERT INTO EmployeeLists VALUES (5, 1);
 INSERT INTO Employee VALUES (0, "Bob Dewilliger", "234 Slurpie good", "CPE", NOW(), NULL, "599234532");
 INSERT INTO Employee VALUES (0, "Poor Bob", "333 Three Threes", "NLE", NOW(), NULL, "786543921");
+INSERT INTO Employee VALUES (0, "Guy in Facility 3", "666 Hell Drive", "Employee", NOW(), NULL, "85940321");
+INSERT INTO Employee VALUES (0, "Manager in Facility 3", "667 Hell Drive", "Manager", NOW(), NULL, "85940444");
+INSERT INTO Employee VALUES (0, "CPE in Facility 3", "668 Hell Drive", "CPE", NOW(), NULL, "85940555");
 INSERT INTO EmployeeLists VALUES (6, 1);
+INSERT INTO EmployeeLists VALUES (8, 3);
+INSERT INTO EmployeeLists VALUES (9, 3);
 
 INSERT INTO RegistrationSheet VALUES("AADG 8865 0087", 2, NOW(), 2015-04-01, "Infant");
 INSERT INTO RegistrationSheet VALUES("XXZP 2265 6787", 2, NOW(), 2015-04-01, "Infant");
@@ -166,3 +172,8 @@ INSERT INTO LogIns VALUES (1, "20b89f30fe36964e3ea174591d72d313"); # iggypoop
 INSERT INTO LogIns VALUES (2, "bf949aea6ea016dcdb41cfd3bb72e7f0"); # flappy
 INSERT INTO LogIns VALUES (5, "831f294d9e68691de228682f96abaf4d"); # pappy
 INSERT INTO LogIns VALUES (4, "56ab24c15b72a457069c5ea42fcfc640"); # happy
+INSERT INTO LogIns VALUES (6, "56ab24c15b72a457069c5ea42fcfc640"); # happy
+
+INSERT INTO LogIns VALUES (8, "56ab24c15b72a457069c5ea42fcfc640"); # happy
+INSERT INTO LogIns VALUES (10, "56ab24c15b72a457069c5ea42fcfc640"); # happy
+INSERT INTO LogIns VALUES (9, "56ab24c15b72a457069c5ea42fcfc640"); # happy
