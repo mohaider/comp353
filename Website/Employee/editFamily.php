@@ -32,7 +32,18 @@ session_start();
                 }
                 $facility = mysqli_fetch_row($resultFacility);
                 
-                $resultFamily = mysqli_query($con, "CALL getFamilyFromFacility('$facility[0]', '$LastName', '$PhoneNum');");
+                if($_SESSION['role'] == "CPE")
+                {
+                    echo "<p>CPE</p>";
+                    $resultFamily = mysqli_query($con, "SELECT *"
+                            . "                         FROM Family"
+                            . "                         WHERE LastName = '$LastName' AND PhoneNum = '$PhoneNum'");
+                }
+                else
+                {
+                    echo "<p>OTHER</p>";
+                    $resultFamily = mysqli_query($con, "CALL getFamilyFromFacility('$facility[0]', '$LastName', '$PhoneNum');");
+                }
                 if(!$resultFamily)
                 {
                     print_r(mysqli_error($con));
