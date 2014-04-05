@@ -2,9 +2,8 @@
 	if (!isset($_SESSION)){
 	session_start();
 	}
-
 	if(isset($_POST["StaffManagement"])){
-		// Redirect		
+		header('Location: StaffManagement.php');
 	}
 	if(isset($_POST["FacilityManagement"])){
 		// Redirect

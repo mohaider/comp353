@@ -274,7 +274,7 @@ FamilyID INT NOT NULL,
 Balance DECIMAL(10,2) NOT NULL,
 ExpDate DATE,
 CreditCardNum VARCHAR(50),
-PreAuthorized BOOL,
+PreAuthorized VARCHAR(3) NOT NULL,
 FOREIGN KEY (FamilyID)
 	REFERENCES Family(ID)
 	ON UPDATE CASCADE
