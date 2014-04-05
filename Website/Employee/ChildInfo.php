@@ -20,6 +20,11 @@ if(isset($_POST["removeChild"]))
     header('Location: removeFromFacility.php');
     die();
 }
+if(isset($_POST["returnEmployee"]))
+{
+    header('Location: ../Employee.php');
+    die();
+}
 ?>
 
 <html>
@@ -268,6 +273,8 @@ else
      <?php
 }
 ?>
-
+<FORM METHOD="POST" ACTION="">
+<INPUT NAME= "returnEmployee" TYPE="submit" VALUE="Return to Menu">
+</FORM>
     </body>
 </html>

@@ -91,23 +91,23 @@ INSERT INTO Employee VALUES (0, "Bob Dewilliger", "234 Slurpie good", "CPE", NOW
 INSERT INTO Employee VALUES (0, "Poor Bob", "333 Three Threes", "NLE", NOW(), NULL, "786543921");
 INSERT INTO EmployeeLists VALUES (6, 1);
 
-INSERT INTO RegistrationSheet VALUES("AADG 8865 0087", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("XXZP 2265 6787", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("SWQR 4444 1002", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("QSSD 9903 0012", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("FFTG 3445 9112", 2, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("BVCX 5757 9022", 1, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("DSGT 6978 1222", 1, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("AAAA 1235 5858", 1, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("ASGH 4433 1212", 1, NOW(), NULL, "Infant");
-INSERT INTO RegistrationSheet VALUES("QWWE 9948 3333", 2, NOW(), NULL, "Infant");
+INSERT INTO RegistrationSheet VALUES("AADG 8865 0087", 2, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("XXZP 2265 6787", 2, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("SWQR 4444 1002", 2, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("QSSD 9903 0012", 2, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("FFTG 3445 9112", 2, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("BVCX 5757 9022", 1, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("DSGT 6978 1222", 1, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("AAAA 1235 5858", 1, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("ASGH 4433 1212", 1, NOW(), 2015-04-01, "Infant");
+INSERT INTO RegistrationSheet VALUES("QWWE 9948 3333", 2, NOW(), 2015-04-01, "Infant");
 
-INSERT INTO RegistrationSheet VALUES("BPGQ 8412 0518", 2, NOW(), NULL, "Toddler");
-INSERT INTO RegistrationSheet VALUES("CCGP 5112 8538", 2, NOW(), NULL, "Toddler");
-INSERT INTO RegistrationSheet VALUES("XXXX 5590 1122", 2, NOW(), NULL, "Toddler");
-INSERT INTO RegistrationSheet VALUES("AQSS 2201 2201", 2, NOW(), NULL, "Toddler");
-INSERT INTO RegistrationSheet VALUES("SDDC 8112 1220", 2, NOW(), NULL, "Toddler");
-INSERT INTO RegistrationSheet VALUES("HHUI 4493 1000", 2, NOW(), NULL, "Toddler");
+INSERT INTO RegistrationSheet VALUES("BPGQ 8412 0518", 2, NOW(), 2015-04-01, "Toddler");
+INSERT INTO RegistrationSheet VALUES("CCGP 5112 8538", 2, NOW(), 2015-04-01, "Toddler");
+INSERT INTO RegistrationSheet VALUES("XXXX 5590 1122", 2, NOW(), 2015-04-01, "Toddler");
+INSERT INTO RegistrationSheet VALUES("AQSS 2201 2201", 2, NOW(), 2015-04-01, "Toddler");
+INSERT INTO RegistrationSheet VALUES("SDDC 8112 1220", 2, NOW(), 2015-04-01, "Toddler");
+INSERT INTO RegistrationSheet VALUES("HHUI 4493 1000", 2, NOW(), 2015-04-01, "Toddler");
 
 INSERT INTO Room VALUES ("H540", "Toddler", "3454");
 INSERT INTO Room VALUES ("H545", "Infant", "6779");
