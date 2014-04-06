@@ -234,12 +234,35 @@ if(isset($_POST['submitFamilyInfo']) || (isset($_SESSION['LastName']) AND isset(
                 echo "<p> Payment Info Missing. Payment Not Processed.";
                 die();
             }
+            
+            if(isset($_POST['Over']))
+            {
+                $field = array('ExpDate', 'CCNum', 'Type');
+                foreach($field as $index)
+                {
+                    if (empty($_POST[$index])) 
+                    {
+                        die("Empty Text Field: ". $index . "Push back button");
+                    }
+                }
+                $expDate = $_POST['ExpDate'];
+                $ccNum = md5($_POST['CCNum']);
+                $autoPay = $_POST['Type'];
+                $resultPayment = mysqli_query($con, "UPDATE Invoices "
+                        . "                          SET ExpDate = '$expDate', CreditCardNum = '$ccNum', PreAuthorized = '$autoPay'"
+                        . "                          WHERE FamilyID = '$familyId'");
+                if(!$resultPayment)
+                {
+                    print_r(mysqli_error($con));
+                }
+                echo "<meta http-equiv='refresh' content='0'>";
+            }
         
             ?>
             <form id="PaymentInfo" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <br />
                     <?php
-                    if($ccNum == NULL || $expDate == NULL || $autoPay == NULL)
+                    if(($ccNum == NULL || $expDate == NULL || $autoPay == NULL) OR isset($_POST['ReEnter']))
                     { ?>
                         Credit Card Number: <input name="CCNum" type="text" id="CCNum" />
                         <br />
@@ -248,9 +271,17 @@ if(isset($_POST['submitFamilyInfo']) || (isset($_SESSION['LastName']) AND isset(
                         Pre-Authorized Payment?  <select name="Type">
                             <option value="Yes">Yes</option>
                             <option value="No">No</option>
-                            </select><?php
-                    }?>
+                            </select>
+                                <input name="Over" type="submit" value="Over-Write CC Info W/o Payment" />
+                                    <?php
+                    }
+                    else
+                    { ?>
+                        <input name="ReEnter" type="submit" value="Re-Enter CC Info" /> <?php
+                    }                  ?>
                     <input name="submitPaymentInfo" type="submit" value="Submit Payment" />
+                    
+                    
             </form><?php
         }
        
@@ -265,6 +296,7 @@ else
                 Phone Number: <input name="PhoneNum" type="text" id="PhoneNum" />
                 <br />
                 <input name="submitFamilyInfo" type="submit" value="Submit" />
+                <input name="ReEnter" type="submit" value="Re-Enter CC Info" />
         </form>
         <?php 
 }
