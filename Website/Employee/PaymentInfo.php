@@ -16,19 +16,25 @@ function diffDates($startDate, $endDate)
       $count += date('N', $start) < 6 ? 1 : 0;
       $start = strtotime("+1 day", $start);
     }
-    return $count - 1;
+    if($count > 0)
+        $count = $count - 1;
+    else
+        $count = 0;
+    return $count;
+    
 }
 ?>
 
-<html
+<html>
     <head>
 		<title>Employee Home Page</title>
     </head>
-    <body>
+    <body><h3>Invoice Page </h3>
 <?php
 include_once("../scripts/db_script.php");
 if(isset($_POST['submitFamilyInfo']) || (isset($_SESSION['LastName']) AND isset($_SESSION['PhoneNum'])))
 {
+        
         if(isset($_POST["submitFamilyInfo"]))
         {
             foreach($field as $index)
@@ -82,6 +88,7 @@ if(isset($_POST['submitFamilyInfo']) || (isset($_SESSION['LastName']) AND isset(
                 $familyId = $row[0];
         }
         cleanDatabaseBuffer($con);
+        
         $resultDates = mysqli_query($con, "SELECT MedicareNum, StartDate, EndDate"
                 . "                        FROM RegistrationSheet"
                 . "                        WHERE MedicareNum IN (SELECT Child.MedicareNum "
@@ -168,16 +175,19 @@ if(isset($_POST['submitFamilyInfo']) || (isset($_SESSION['LastName']) AND isset(
         if(mysqli_num_rows($resultInvoices) != 0)
         {
             echo "
-            <h3>Family Guardians:</h3>
+            <h3>Family Invoice:</h3>
             <table Border='1'>
             <tr>
             <th>Family ID</th>
             <th>Balance</th>
             <th>Recurring Credit Card Payment</th>
             </tr>";
-
+            
             while($row = mysqli_fetch_array($resultInvoices, MYSQL_BOTH))
             {
+                $ccNum = $row[3];
+                $expDate = $row[2];
+                $autoPay = $row[4];
                 echo "<tr>
                 <td>" . $row[0] . "</td>
                 <td>" . $row[1] . "</td>
@@ -186,6 +196,93 @@ if(isset($_POST['submitFamilyInfo']) || (isset($_SESSION['LastName']) AND isset(
             }
             cleanDatabaseBuffer($con);
             echo "</table>";
+            if(isset($_POST['submitPaymentInfo']) AND ($ccNum != NULL AND $expDate != NULL AND $autoPay != NULL))
+            {
+                $resultPayment = mysqli_query($con, "UPDATE Invoices "
+                        . "                          SET Balance = 0, ExpDate = '$expDate', CreditCardNum = '$ccNum', PreAuthorized = '$autoPay'"
+                        . "                          WHERE FamilyID = '$familyId'");
+                if(!$resultPayment)
+                {
+                    print_r(mysqli_error($con));
+                }
+                echo "<meta http-equiv='refresh' content='0'>";
+            }
+            else if(isset($_POST['submitPaymentInfo']))
+            {
+                $field = array('ExpDate', 'CCNum', 'Type');
+                foreach($field as $index)
+                {
+                    if (empty($_POST[$index])) 
+                    {
+                        die("Empty Text Field: ". $index . "Push back button");
+                    }
+                }
+                $expDate = $_POST['ExpDate'];
+                $ccNum = md5($_POST['CCNum']);
+                $autoPay = $_POST['Type'];
+                $resultPayment = mysqli_query($con, "UPDATE Invoices "
+                        . "                          SET Balance = 0, ExpDate = '$expDate', CreditCardNum = '$ccNum', PreAuthorized = '$autoPay'"
+                        . "                          WHERE FamilyID = '$familyId'");
+                if(!$resultPayment)
+                {
+                    print_r(mysqli_error($con));
+                }
+                echo "<meta http-equiv='refresh' content='0'>";
+            }
+            else if(isset($_POST['submitPaymentInfo']))
+            {
+                echo "<p> Payment Info Missing. Payment Not Processed.";
+                die();
+            }
+            
+            if(isset($_POST['Over']))
+            {
+                $field = array('ExpDate', 'CCNum', 'Type');
+                foreach($field as $index)
+                {
+                    if (empty($_POST[$index])) 
+                    {
+                        die("Empty Text Field: ". $index . "Push back button");
+                    }
+                }
+                $expDate = $_POST['ExpDate'];
+                $ccNum = md5($_POST['CCNum']);
+                $autoPay = $_POST['Type'];
+                $resultPayment = mysqli_query($con, "UPDATE Invoices "
+                        . "                          SET ExpDate = '$expDate', CreditCardNum = '$ccNum', PreAuthorized = '$autoPay'"
+                        . "                          WHERE FamilyID = '$familyId'");
+                if(!$resultPayment)
+                {
+                    print_r(mysqli_error($con));
+                }
+                echo "<meta http-equiv='refresh' content='0'>";
+            }
+        
+            ?>
+            <form id="PaymentInfo" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <br />
+                    <?php
+                    if(($ccNum == NULL || $expDate == NULL || $autoPay == NULL) OR isset($_POST['ReEnter']))
+                    { ?>
+                        Credit Card Number: <input name="CCNum" type="text" id="CCNum" />
+                        <br />
+                        Expiration Date(yy-mm): <input name="ExpDate" type="text" id="ExpDate" />
+                        <br />
+                        Pre-Authorized Payment?  <select name="Type">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            </select>
+                                <input name="Over" type="submit" value="Over-Write CC Info W/o Payment" />
+                                    <?php
+                    }
+                    else
+                    { ?>
+                        <input name="ReEnter" type="submit" value="Re-Enter CC Info" /> <?php
+                    }                  ?>
+                    <input name="submitPaymentInfo" type="submit" value="Submit Payment" />
+                    
+                    
+            </form><?php
         }
        
 }
@@ -199,12 +296,13 @@ else
                 Phone Number: <input name="PhoneNum" type="text" id="PhoneNum" />
                 <br />
                 <input name="submitFamilyInfo" type="submit" value="Submit" />
+                <input name="ReEnter" type="submit" value="Re-Enter CC Info" />
         </form>
         <?php 
 }
 
 ?>
-        <FORM METHOD="LINK" ACTION="">
+        <FORM METHOD="LINK" ACTION="resetPayment.php">
         <INPUT NAME= "Reset" TYPE="submit" VALUE="Reset Search">
         </FORM>
         <FORM METHOD="POST" ACTION="">
