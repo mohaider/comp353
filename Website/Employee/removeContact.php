@@ -68,6 +68,7 @@ session_start();
                         echo "Change Successful";
                         cleanDatabaseBuffer($con);
                         $resultDelete = mysqli_query($con, "DELETE FROM IsAuthorized WHERE ContactNumber = '$edit';");
+                        echo "<meta http-equiv='refresh' content='0'>";
                     }
                     else
                     {

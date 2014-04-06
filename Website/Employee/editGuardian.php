@@ -75,11 +75,13 @@ session_start();
                     if($resultUpdate)
                     {
                         echo "Change Successful";
+                         echo "<meta http-equiv='refresh' content='0'>";
                     }
                     else
                     {
                          printf("Errormessage: %s\n", mysqli_error($con));
                     }
+                    
                 }
                 mysqli_close($con);
         }

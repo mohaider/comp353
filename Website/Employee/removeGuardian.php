@@ -61,6 +61,7 @@ session_start();
                         echo "Change Successful";
                         cleanDatabaseBuffer($con);
                         $resultDelete = mysqli_query($con, "DELETE FROM Guardian WHERE ID = '$edit';");
+                         echo "<meta http-equiv='refresh' content='0'>";
                     }
                     else
                     {

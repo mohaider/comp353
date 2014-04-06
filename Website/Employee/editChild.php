@@ -84,6 +84,7 @@ if(isset($_SESSION['MediNum']))
             if($resultUpdate)
             {
                 echo "Change Successful";
+                echo "<meta http-equiv='refresh' content='0'>";
             }
             else
             {
