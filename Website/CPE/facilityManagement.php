@@ -1,15 +1,13 @@
 <?php
 if (!isset($_SESSION))
     session_start();
-        if(!isset($_SESSION['role']))
-{
+if (!isset($_SESSION['role'])) {
     header('../login.php');
+}
+if ($_SESSION['role'] != "CPE") {
+    header('Location:../' . $_SESSION['role'] . 'PHP');
     die();
 }
-        if ($_SESSION['role'] != "CPE") {
-        header('Location:../'.$_SESSION['role'].'PHP');
-        die();
-    }
 //if (isset($_POST['facilitySubmissionEdit'])) {
 //    header('Location:facilityManagement.php');
 //    die();
@@ -23,9 +21,16 @@ if (isset($_POST['returnToCPEMenu'])) {
     header('Location:../CPE.php');
     die();
 }
+
+
+
+		echo "<table><tr>";
+			echo "<td><a href=\"../CPE.php\">CPE</a></td>";
+			echo "<td><a href=\"../Manager.php\">Manager</a></td>";
+			echo "<td><a href=\"../Employee.php\">Employee</a>";
+		echo "</tr></table>";
+	
 ?>
-
-
 
 
 <!DOCTYPE html>
