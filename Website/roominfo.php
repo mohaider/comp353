@@ -1,9 +1,15 @@
 <?php
+session_start();
+if(isset($_POST['Reset']))
+{
+    unset($_SESSION['RoomNum']);
+    header('Location: RoomSelect.php');
+}
 	include_once("scripts/staff_script.php");
 	include_once('scripts/room_script.php');
 	include_once('scripts/db_script.php');
 	
-	$roomID = "H666";
+	$roomID = $_SESSION['RoomNum'];
 	$connection = db_connect();
 	
 	if (isset($_POST["submitFrmRoomInfo"]))
@@ -14,7 +20,7 @@
 			{ 
 				$message = "The room must be empty of children before changing the age group";
 				echo "<script type='text/javascript'>alert('$message');</script>";
-				//echo "To modify the age group of a room, the room must be empty"; 
+				echo "<p>To modify the age group of a room, the room must be empty</p>"; 
 			}
 			else
 			{
@@ -146,6 +152,8 @@
 			}
 		</script>
 		<br />
+                <form method="POST" action ='<?php echo $_SERVER['PHP_SELF']; ?>'> 
+		<input type="submit" name="Reset" value="Reset Room Search">
 	</body>
 </html>
 <?php

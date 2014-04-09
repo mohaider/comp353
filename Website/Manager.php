@@ -6,7 +6,7 @@
 		header('Location: StaffManagement.php');
 	}
 	if(isset($_POST["FacilityManagement"])){
-		// Redirect
+		header('Location: RoomSelect.php');
 	}
 	if ( isset($_SESSION['role']) ) {
 		$access = $_SESSION['role'];

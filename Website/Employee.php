@@ -29,6 +29,9 @@
 		<title>Employee Home Page</title>
 	</head>
 	<body>
+            <?php
+            echo "Role:". $_SESSION['role'];
+            ?>
 
 
 <?php include("accesslevel.php"); ?>
