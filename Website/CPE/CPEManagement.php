@@ -51,7 +51,6 @@
 
         <input type="submit" name="newManager" value="Add New Employee/Manager">
         <input type="submit" name="existingManager" value=" Modify existing management(or employees) "> 
-	<input type="submit" name="ChildFacRelo" value="Child Facility Relocation">
 	</form>			
 	</body>
 
