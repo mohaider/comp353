@@ -8,7 +8,7 @@ if (!isset($_SESSION['role'])) {
     die();
 }
 
-if (!isset($_SESSION['facilitySubmissionEdit'])) {
+if (!isset($_SESSION['facilitySelected'])) {
     header('Location:cpeExistingEmployeeMenu.php');
 }
 
@@ -61,7 +61,33 @@ echo "</tr></table>";
 <?php
 include_once("../scripts/db_script.php");
 $con = db_connect();
+if (isset($_POST['employeeTerminate'])) {
+    cleanDatabaseBuffer($con);
+    $facilitySelected = $_SESSION['facilitySelected'];
+    $sqlDate = date("Y-m-d");
+    //mySQL to update employee information to show his role as NLE: no longer employed
+    $sqlEmployeeUpdate = " UPDATE employee "
+            . "SET EndDate =" . "'" . $sqlDate . "'" . ","
+            . "Role= 'NLE' "
+            . "WHERE EmpID= " . $_POST['employeeSelected'];
 
+    //mySQL query to delete employee from the employee list table
+
+    $sqlEmployeelistDeletion = " DELETE FROM employeelists "
+            . "WHERE EmpID= " . $_POST['employeeSelected'];
+    $sqlUpdateEmployeeTable = mysqli_query($con, $sqlEmployeeUpdate);
+    if (!$sqlUpdateEmployeeTable) {
+        print_r(mysqli_error($con));
+    }
+
+    cleanDatabaseBuffer($con);
+    $sqlDeleteFromEmployeeList = mysqli_query($con, $sqlEmployeelistDeletion);
+    if (!$sqlDeleteFromEmployeeList) {
+        print_r(mysqli_error($con));
+    }
+    $_SESSION['employeeisTerminated'] = true;
+    header('Location:cpeExistingEmployee.php');
+}
 
 if (!isset($_POST['employeeSelected']) || $_SESSION['employeeisTerminated'] 
         || !isset($_POST['employeeSubmit'])|| !isset($_POST['submitEmployeeInformation'])) {
@@ -115,33 +141,7 @@ if (!isset($_POST['employeeSelected']) || $_SESSION['employeeisTerminated']
     echo"</form>";
     db_close($con);
 }
-if (isset($_POST['employeeTerminate'])) {
-    cleanDatabaseBuffer($con);
-    $facilitySelected = $_SESSION['facilitySelected'];
-    $sqlDate = date("Y-m-d");
-    //mySQL to update employee information to show his role as NLE: no longer employed
-    $sqlEmployeeUpdate = " UPDATE employee "
-            . "SET EndDate =" . "'" . $sqlDate . "'" . ","
-            . "Role= 'NLE' "
-            . "WHERE EmpID= " . $_POST['employeeSelected'];
 
-    //mySQL query to delete employee from the employee list table
-
-    $sqlEmployeelistDeletion = " DELETE FROM employeelists "
-            . "WHERE EmpID= " . $_POST['employeeSelected'];
-    $sqlUpdateEmployeeTable = mysqli_query($con, $sqlEmployeeUpdate);
-    if (!$sqlUpdateEmployeeTable) {
-        print_r(mysqli_error($con));
-    }
-
-    cleanDatabaseBuffer($con);
-    $sqlDeleteFromEmployeeList = mysqli_query($con, $sqlEmployeelistDeletion);
-    if (!$sqlDeleteFromEmployeeList) {
-        print_r(mysqli_error($con));
-    }
-    $_SESSION['employeeisTerminated'] = true;
-    header('Location:cpeExistingEmployee.php');
-}
 if (isset($_POST['employeeSubmit']) & !isset($_POST['submitEmployeeInformation'])) {
     
     $currentEmp = $_POST['employeeSelected'];
