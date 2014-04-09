@@ -68,10 +68,10 @@
 		$cond = "";
 	}
 	elseif ($access == "Employee") {
-		$ID = $_SESSION['EmpID'];
-		$cond = "Where EmpId = $ID";
+		$ID = $_SESSION['empID'];
+		$cond = "WHERE EmpId = '$ID'";
 	}
-	$query = "SELECT * FROM Schedule Join Employee On Schedule.EmpID = Employee.EmpID WHERE Schedule.EmpID IN ( Select EmpId From EmployeeLists ".$cond.");";
+	$query = "SELECT * FROM Schedule Join Employee On Schedule.EmpID = Employee.EmpID WHERE Schedule.EmpID IN ( Select EmpId From EmployeeLists ". $cond .");";
 	
 	$result = mysqli_query($connection , $query );
 	if ( $result ) {

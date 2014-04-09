@@ -11,7 +11,8 @@
 		header('Location: Employee\ChildInfo.php');
 	}
 	if (isset($_POST["StaffInfo"])){
-		// Redirects to Staff Info Page
+		header('Location: ViewSchedule.php');
+
 	}
 	if (isset($_POST["FamilyInfo"])){
 		header('Location: Employee\FamilyInfo.php');

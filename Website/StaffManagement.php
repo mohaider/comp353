@@ -4,7 +4,7 @@
 	}
 
 	if (isset($_POST["NewEmployee"])){
-		// New Employyee Page
+		header('Location: addemployee.php');
 	}
 	
 	if(isset($_POST["ExistingEmployee"])){

@@ -101,7 +101,7 @@ if(isset($_POST['submitFamilyInfo']) || (isset($_SESSION['LastName']) AND isset(
         {
             print_r(mysqli_error($con));
         }
-        $chargeDays;
+        $chargeDays = 0;
 
         $today = date("Y-m-d");
 
