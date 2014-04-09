@@ -4,25 +4,27 @@
         }
         if(!isset($_SESSION['role']))
 {
-    header('../login.php');
+    header('login.php');
     die();
 }
         if ($_SESSION['role'] != "CPE") {
         header('Location:'.$_SESSION['role'].'PHP');
-        die();
+
     }
 
 	if (isset($_POST['Managerfunc'])){
-            header('Location:')
-            die();
+            header('Location:CPE/CPEManagement.php');
+ 
 	}
 	if (isset($_POST['FacilityManagement'])){
             header('Location:CPE/facilityManagement.php');
-            die();
+  
 	}
 	if (isset($_POST['ChildFacRelo'])){
-		// Redirect
+            header('Location:CPE/childFacilityRelocationMenu.php');
+            
 	}
+        
 	if ( isset($_SESSION['role']) ) {
 		$access = $_SESSION['role'];
 		
@@ -46,7 +48,8 @@
 	<input type="submit" name="Managerfunc" value="Manager Function">
 	<input type="submit" name="FacilityManagement" value="Facility Management">
 	<input type="submit" name="ChildFacRelo" value="Child Facility Relocation">
-	</form>			
+	</form>	
+            
 	</body>
 
 
