@@ -233,7 +233,7 @@ EndDate DATE,
 SSN VARCHAR(9) NOT NULL,
 CHECK(Role IN('Employee','Manager','CPE','NLE')), 
 UNIQUE(SSN, EmpId),
-PRIMARY KEY(EmpId),
+PRIMARY KEY(EmpId)
 );
 
 DROP TABLE IF EXISTS LogIns;
