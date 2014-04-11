@@ -9,14 +9,14 @@
 			header('Location: Employee.php');
 		}
 	}
-	
+	var_dump($_SESSION);
 	$connection = db_connect();
 	// Get the FacilityID for The dropdown list
 	// $cond is the extra condition statement used in the dropdown list
 	$cond = ";";
 	if ( isset($_SESSION['role'])) {
 		$access = $_SESSION['role'];
-		$id = $_SESSION['EmpID'];
+		$id = $_SESSION['empID'];
 		if ( $access == "Manager") {
 			$query = "SELECT FacilityID FROM EmployeeLists WHERE EmpID = '$id';";
 			$result = mysqli_query($connection , $query);
@@ -105,7 +105,15 @@
 	<td>Room Number</td>
 	<td>
 <?php
-	$query2 = "SELECT RoomNum FROM Room";
+	$empID = $_SESSION['empID'];
+        $resultFacility = mysqli_query($connection, "SELECT DISTINCT(FacilityID) FROM EmployeeLists WHERE EmpID = '$empID';");
+        if(!$resultFacility)
+        {
+            print_r(mysqli_error($con));
+        }
+        $facility = mysqli_fetch_row($resultFacility);
+	echo "<p>empID: ". $empID ."FacilityID: " . $Facility[0]. "</P>";
+	$query2 = "SELECT RoomNum FROM Houses WHERE FacilityID = '$facility[0]'";
 	
 	$result2 = mysqli_query($connection, $query2);
 	if (!$result2){
