@@ -36,9 +36,12 @@
 		}
 	}
 	
-	function addNewChild($connection, $medicNum, $sex, $dob, $name, $ageGroup)
+	function addNewChild($connection, $medicNum, $sex, $dob, $name, $ageGroup, $famID)
 	{
+		$ID = intval($famID);
 		$resultInsert = mysqli_query($connection, "INSERT INTO Child (MedicareNum, SEX, DOB, Name, AgeGroup) VALUES ('" . $medicNum . "', '" . $sex . "', '" . $dob . "', '" . $name . "', '" . $ageGroup . "');");
+		
+		$resultInsert2 = mysqli_query($connection, "INSERT INTO ChildOf VALUES ('" . $medicNum . "', " . $ID . ");");
 		
 		//echo "INSERT INTO Child (MedicareNum, SEX, DOB, Name, AgeGroup) VALUES ('" . $medicNum . "', '" . $sex . "', '" . $name . "', '" . //$ageGroup . "');";
 	}

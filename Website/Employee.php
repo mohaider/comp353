@@ -2,7 +2,7 @@
 	if(!isset($_SESSION)) {
 		session_start();
 	if(isset($_POST["Registration"])){
-		// redirec to Registration Page
+		header('location: newfamilylook.php');
 	}
 	if (isset($_POST["PaymentInfo"])){
 		header('Location: Employee\PaymentInfo.php');

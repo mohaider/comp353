@@ -9,7 +9,7 @@ if(isset($_POST['Reset']))
 	include_once('scripts/room_script.php');
 	include_once('scripts/db_script.php');
 	
-	$roomID = $_SESSION['RoomNum'];
+	$roomID = 'C350'; //$_SESSION['RoomNum'];
 	$connection = db_connect();
 	
 	if (isset($_POST["submitFrmRoomInfo"]))
@@ -35,9 +35,6 @@ if(isset($_POST['Reset']))
 <html>
 	<head>
 		<title>Room Information</title>
-		<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
-		<script type="text/javascript" src="js/jquery-ui-1.10.4.custom.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.10.4.custom.min.css" />
 	</head>
 	<body>
 		<b>Room Information</b>
@@ -74,7 +71,7 @@ if(isset($_POST['Reset']))
 			$empList = getStaffList($connection, $roomID);
 			$empNumber = count($empList);
 		?>
-		Staff member: <?php echo $empNumber ?> (<a href="#" onclick="openStaffMemberBox();">View</a>)
+		Staff member: <?php echo $empNumber ?>)
 		<div id="staffDialog" style="width: 800px;">
 			<table>
 				<tr>
@@ -95,27 +92,13 @@ if(isset($_POST['Reset']))
 				?>
 			</table>
 		</div>
-		<script type="text/javascript">
-			$(function() {
-				$("#staffDialog").dialog({
-					width: 800,
-					modal: true,
-					autoOpen: false,
-					title: "Staff List",
-				});
-			});
-			
-			function openStaffMemberBox()
-			{
-				$("#staffDialog").dialog("open");
-			}
-		</script>
+		
 		<br />
 		<?php
 			$childList = getChildrenList($connection, $roomID);
 			$childNumber = count($childList);
 		?>
-		Children: <?php echo $childNumber ?> / MAX NUMBER OF CHILDREN (<a href="#" onclick="openChildrenBox();">View</a>)
+		Children: <?php echo $childNumber ?> / 9 <!--- WE NEED TO HAVE A FUNCTION TO CALCULATE THE RATIO --->
 		<div id="childrenDialog">
 			<table>
 				<tr>
@@ -136,21 +119,7 @@ if(isset($_POST['Reset']))
 				?>
 			</table>
 		</div>
-		<script type="text/javascript">
-			$(function() {
-				$("#childrenDialog").dialog({
-					modal: true,
-					autoOpen: false,
-					title: "Children List",
-					width: 700,
-				});
-			});
-			
-			function openChildrenBox()
-			{
-				$("#childrenDialog").dialog("open");
-			}
-		</script>
+		
 		<br />
                 <form method="POST" action ='<?php echo $_SERVER['PHP_SELF']; ?>'> 
 		<input type="submit" name="Reset" value="Reset Room Search">

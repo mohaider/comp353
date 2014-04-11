@@ -15,7 +15,7 @@
 			$dob = $_POST['dob'];
 			$group = $_POST['ageSelect'];
 			
-			addNewChild($connection, $medicNum, $sex, $dob, $childName, $group);
+			addNewChild($connection, $medicNum, $sex, $dob, $childName, $group, $familyID);
 			echo "Child registered in the system. You can add another child to this family or return to the main page. <br />";
 		}
 	}
