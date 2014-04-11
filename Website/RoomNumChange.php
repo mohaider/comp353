@@ -9,7 +9,6 @@
 			header('Location: Employee.php');
 		}
 	}
-	var_dump($_SESSION);
 	$connection = db_connect();
 	// Get the FacilityID for The dropdown list
 	// $cond is the extra condition statement used in the dropdown list
