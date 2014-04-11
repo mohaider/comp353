@@ -1,20 +1,12 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 if (!isset($_SESSION)) {
     session_start();
 }
 if (!isset($_SESSION['role'])) {
-    header('../login.php');
+    header('Location:../login.php');
 }
 if ($_SESSION['role'] != 'CPE') {
-     header('Location:../' .$_SESSION['role'].'PHP');
-    
+     header('Location:../' .$_SESSION['role'].'PHP');   
 }
 
 if(isset($_POST))
@@ -67,12 +59,11 @@ $facilitySelected = $_SESSION['facilitySelected'];
 
     //mysql query to retrieve a list of children based off the facility they are registered into
     //SELECT * FROM child NATURAL JOIN (SELECT MedicareNum FROM `registrationsheet` WHERE FacilityID=1) AS T1
-      $sqlChildListQuery = "SELECT * FROM child "
+      $sqlChildListQuery = "SELECT * FROM Child "
               . "NATURAL JOIN (SELECT MedicareNum "
-              . "FROM registrationsheet "
+              . "FROM RegistrationSheet "
               . "WHERE FacilityID=".$facilitySelected.") "
               . "AS T1";
-      
       $sqlChildListQueryResults = mysqli_query($con, $sqlChildListQuery);
       if(!$sqlChildListQueryResults)
           print_r(mysqli_error($con));

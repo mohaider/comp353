@@ -2,16 +2,13 @@
 if (!isset($_SESSION)) {
     session_start();
 }
-
 if (!isset($_SESSION['role'])) {
     header('Location:../login.php');
     die();
 }
-
 if (!isset($_SESSION['facilitySelected'])) {
     header('Location:cpeExistingEmployeeMenu.php');
 }
-
 if (isset($_POST['existingManager'])) {
     unset($_POST);
     header('Location:cpeExistingEmployeeMenu.php');
@@ -66,14 +63,14 @@ if (isset($_POST['employeeTerminate'])) {
     $facilitySelected = $_SESSION['facilitySelected'];
     $sqlDate = date("Y-m-d");
     //mySQL to update employee information to show his role as NLE: no longer employed
-    $sqlEmployeeUpdate = " UPDATE employee "
+    $sqlEmployeeUpdate = " UPDATE Employee "
             . "SET EndDate =" . "'" . $sqlDate . "'" . ","
             . "Role= 'NLE' "
             . "WHERE EmpID= " . $_POST['employeeSelected'];
 
     //mySQL query to delete employee from the employee list table
 
-    $sqlEmployeelistDeletion = " DELETE FROM employeelists "
+    $sqlEmployeelistDeletion = " DELETE FROM EmployeeLists "
             . "WHERE EmpID= " . $_POST['employeeSelected'];
     $sqlUpdateEmployeeTable = mysqli_query($con, $sqlEmployeeUpdate);
     if (!$sqlUpdateEmployeeTable) {
@@ -97,8 +94,8 @@ if (!isset($_POST['employeeSelected']) || $_SESSION['employeeisTerminated']
     $_POST['facilitySelected'] = $facilitySelected;
 
     //MYSQL query for employee retrieval of a facility
-    $SqlEmployees = "SELECT * FROM (employee NATURAL JOIN 
-            (SELECT * FROM employeelists WHERE facilityID =" . $facilitySelected . " ) 
+    $SqlEmployees = "SELECT * FROM (Employee NATURAL JOIN 
+            (SELECT * FROM EmployeeLists WHERE facilityID =" . $facilitySelected . " ) 
             AS tableOfEmps)
             WHERE Role<>'CPE' AND Role<>'NLE'";
 
@@ -143,12 +140,11 @@ if (!isset($_POST['employeeSelected']) || $_SESSION['employeeisTerminated']
 }
 
 if (isset($_POST['employeeSubmit']) & !isset($_POST['submitEmployeeInformation'])) {
-    
     $currentEmp = $_POST['employeeSelected'];
 
 
     //mySQL query get a list of facilities 
-    $availableFacility = "SELECT * FROM facility "; 
+    $availableFacility = "SELECT * FROM Facility "; 
 //            . "WHERE ID <> (SELECT FacilityID "
 //            . "FROM employeelists "
 //            . "WHERE EmpID =".$currentEmp .") ";
@@ -157,10 +153,16 @@ if (isset($_POST['employeeSubmit']) & !isset($_POST['submitEmployeeInformation']
     if (!$sqlResultOfFacilityQuery) {
         print_r(mysqli_error($con));
     }
+    $resultOfAddress = mysqli_query($con, "SELECT Address FROM Employee "
+            . "WHERE EmpID= ".$currentEmp);
+      
+    $curAddress = mysqli_fetch_row($resultOfAddress);
+    $currentAddress = $curAddress[0];
     echo "<form name='editEmployees' method='POST' action=" . $_SERVER['PHP_SELF'] . ">";
     //<input type='radio' name='facilitySelected' id='facilityRadioButton' value=" . $row['ID'] . ">
     echo "Employee ID: " . "<input type ='radio' name='empID' "
     . " value =" . $currentEmp . " checked>  " . $currentEmp . "</br>";
+    echo "New Address<input type='text' name='newAddress' value='".$currentAddress."'></br> ";
     echo "Move to Different Facility <select name='newFacility'>";
     while ($row = mysqli_fetch_array($sqlResultOfFacilityQuery, MYSQL_BOTH)) {
         echo "<option value =" . $row['ID'] . ">" . $row['Address'] . "</option>";
@@ -181,11 +183,12 @@ if (isset($_POST['employeeSubmit']) & !isset($_POST['submitEmployeeInformation']
        $currentEmp = $_POST['empID'];
        $newFacility = $_POST['newFacility'];
        $newRole = $_POST['newRole'];
+       $newAddress = $_POST['newAddress'];
        $con = db_connect();
        
        //mysql query to update the employee table
-       $sqlUpdateEmployeeTable = "UPDATE employee "
-               . "SET Role="."'".$newRole."'"
+       $sqlUpdateEmployeeTable = "UPDATE Employee "
+               . "SET Role="."'".$newRole."', Address='".$newAddress."' "
                . " WHERE EmpID=".$currentEmp;
        
         $sqlUpdateEmployeeTableResult = mysqli_query($con, $sqlUpdateEmployeeTable);
@@ -199,7 +202,7 @@ if (isset($_POST['employeeSubmit']) & !isset($_POST['submitEmployeeInformation']
        
 //mysql query to get old facility(this will be used to check if the employee needs to be removed from 
        $sqlGetOldFacility  = "SELECT FacilityID "
-               . "FROM employeelists "
+               . "FROM EmployeeLists "
                . "WHERE EmpID = ".$currentEmp;
 
       $sqlGetOldFacilityResults = mysqli_query($con, $sqlGetOldFacility);
@@ -218,7 +221,7 @@ if (isset($_POST['employeeSubmit']) & !isset($_POST['submitEmployeeInformation']
     if ($oldFacility != $newFacility) {
         cleanDatabaseBuffer($con);
         //mysql query to update the employee list to reflect the new facility 
-        $sqlUpdateEmployeelist = "UPDATE employeelists "
+        $sqlUpdateEmployeelist = "UPDATE EmployeeLists "
                 . "SET FacilityID= " . $newFacility . " "
                 . "WHERE EmpID=" . $currentEmp;
 
@@ -230,7 +233,7 @@ if (isset($_POST['employeeSubmit']) & !isset($_POST['submitEmployeeInformation']
         cleanDatabaseBuffer($con);
         //mysql query to remove employee from rooms
 
-        $sqlDeleteFromSupervises = "DELETE FROM supervises "
+        $sqlDeleteFromSupervises = "DELETE FROM Supervises "
                 . "WHERE EmpID=" . $currentEmp;
        
         $sqlDeleteFromSupervisesResults = mysqli_query($con, $sqlUpdateEmployeelist);

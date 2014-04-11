@@ -82,9 +82,9 @@ function writeToDatabase($data)
 {
     include_once("../scripts/db_script.php");
         $con = db_connect();
-        //mysql statement to insert into facility table
+        //mysql query to insert into facility table
         $sql = sprintf(
-    'INSERT INTO facility(%s) VALUES ("%s")',
+    'INSERT INTO Facility(%s) VALUES ("%s")',
     implode(',',array_keys($data)),
     implode('","',array_values($data))
 );

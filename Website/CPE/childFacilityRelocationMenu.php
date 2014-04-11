@@ -3,13 +3,12 @@ if (!isset($_SESSION)) {
     session_start();
 }
 if (!isset($_SESSION['role'])) {
-    header('../login.php');
+    header('Location:../login.php');
 }
 if ($_SESSION['role'] != 'CPE') {
     header('Location:../' . $_SESSION['role'] . 'PHP');
     var_dump($_SESSION);
 }
-
 if (isset($_POST['facilitySelected'])) {
     $_SESSION['facilitySelected'] = $_POST['facilitySelected'];
     header('Location:cpeExistingChild.php');
@@ -20,8 +19,6 @@ echo "<td><a href=\"../Manager.php\">Manager</a></td>";
 echo "<td><a href=\"../Employee.php\">Employee</a>";
 echo "</tr></table>";
 ?>
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -57,13 +54,11 @@ echo "</tr></table>";
                 include_once("../scripts/db_script.php");
                 $con = db_connect();
                 //MYSQL query for facility information display 
-                $existingFacQuery = " SELECT * FROM FACILITY  ";
+                $existingFacQuery = " SELECT * FROM Facility  ";
                 //mySQL query for finding the number of rooms in a facility
                 $numOfRoomsQuery = "SELECT COUNT( FacilityID )"
-                        . " FROM houses "
+                        . " FROM Houses "
                         . "WHERE FacilityID =";
-
-
                 $existingFacilities = mysqli_query($con, $existingFacQuery);
                 echo "<form name='facilitySelection' method='POST' action=" . $_SERVER['PHP_SELF'] . " onsubmit= \"return validateForm();\">";
                 echo "
@@ -77,10 +72,7 @@ echo "</tr></table>";
                 <th>Facility&#39s Phone Number</th>
                 <th>Room Count</th>
                 </tr>";
-
                 //display facility information
-
-
                 $idArray = array();
                 while ($row = mysqli_fetch_array($existingFacilities, MYSQL_BOTH)) {
 

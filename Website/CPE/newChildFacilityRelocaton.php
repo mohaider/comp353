@@ -10,7 +10,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 if (!isset($_SESSION['role'])) {
-    header('../login.php');
+    header('Location:../login.php');
 }
 if ($_SESSION['role'] != 'CPE') {
      header('Location:../' .$_SESSION['role'].'PHP');
@@ -31,7 +31,7 @@ echo "</tr></table>";
      $newFacility = $_POST['facilitySelected'];
      $currentChild = $_SESSION['childSelected'];
      //mysql query to update child's registration sheet to new facility
-     $sqlUpdateQuery = "UPDATE registrationsheet "
+     $sqlUpdateQuery = "UPDATE RegistrationSheet "
              . "SET FacilityID=".$newFacility." "
              . "WHERE MedicareNum='$currentChild'";
      
@@ -41,7 +41,7 @@ echo "</tr></table>";
      cleanDatabaseBuffer($con);
      
      //query to remove child from seated into
-     $sqlDeleteChildFromRoom = "DELETE FROM seatedinto "
+     $sqlDeleteChildFromRoom = "DELETE FROM SeatedInto "
              . "WHERE MedicareNum='$currentChild'";
      $sqlDeleteChildFromRoomResults = mysqli_query($con,$sqlDeleteChildFromRoom);
      if (! $sqlDeleteChildFromRoomResults)
@@ -91,9 +91,9 @@ $childSelected = $_SESSION['childSelected'];
 
 //mysql query to select facilities that don't have the child as a registrant
 
-$sqlListofFacilities = "SELECT * FROM facility "
+$sqlListofFacilities = "SELECT * FROM Facility "
         . "WHERE ID <>( SELECT FacilityID "
-        . "FROM registrationsheet "
+        . "FROM RegistrationSheet "
         . "WHERE MedicareNum  ='$childSelected')";
 $sqlListofFacilitiesResult = mysqli_query($con, $sqlListofFacilities);
 
@@ -130,13 +130,7 @@ if (!$sqlListofFacilitiesResult)
 
             echo " <input type='submit' name='facilitySubmissionEdit' value='Submit'>"
             . "</form>";
-
-    
-  
-  
-  
   ?>
-
         <a href="cpeExistingChild.php">Return to child selection menu</a>
     </body>
 </html>

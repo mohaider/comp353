@@ -2,7 +2,7 @@
 if (!isset($_SESSION))
     session_start();
 if (!isset($_SESSION['role'])) {
-    header('../login.php');
+    header('Location:../login.php');
 }
 if ($_SESSION['role'] != "CPE") {
     header('Location:../' . $_SESSION['role'] . 'PHP');
@@ -70,10 +70,10 @@ if (isset($_POST['returnToCPEMenu'])) {
         if (!isset($_POST['facilitySubmissionEdit']) & !isset($_POST['submitFacilityMods'])
                 &!isset($_POST['terminateFacility']) ) {
            //MYSQL query for facility information display 
-            $existingFacQuery = " SELECT * FROM FACILITY  ";
+            $existingFacQuery = " SELECT * FROM Facility  ";
             //mySQL query for finding the number of rooms in a facility
             $numOfRoomsQuery = "SELECT COUNT( FacilityID )"
-                    . " FROM houses "
+                    . " FROM Houses "
                     . "WHERE FacilityID =";
 
 
@@ -127,7 +127,7 @@ if (isset($_POST['returnToCPEMenu'])) {
             $newFacilityNum = $_POST['newPhoneNumber'];
             $con = db_connect();
             //mysql query to update facility with new phone number and address
-            $resultUpdate = mysqli_query($con, "UPDATE facility\n"
+            $resultUpdate = mysqli_query($con, "UPDATE Facility\n"
                                                      . "SET PhoneNum = '$newFacilityNum', Address = '$newFacilityAddress'\n"
                                                      . "WHERE ID = '$facilityID';");
             
@@ -145,11 +145,11 @@ if (isset($_POST['returnToCPEMenu'])) {
             //mySql query to remove rooms that are housed in the facility
             
             $deleteRoomSQL = "DELETE FROM ROOM \n"
-                    . "WHERE RoomNum IN (SELECT FROM houses "
-                    . " JOIN FACILITY ON houses.FacilityID =".$facilityID.")";
+                    . "WHERE RoomNum IN (SELECT FROM Houses "
+                    . " JOIN Facility ON Houses.FacilityID =".$facilityID.")";
             cleanDatabaseBuffer($con);
             //mysql query to delete facility where id = facilityID
-            $resultDelete = mysqli_query($con,"DELETE FROM facility WHERE ID =".$facilityID);
+            $resultDelete = mysqli_query($con,"DELETE FROM Facility WHERE ID =".$facilityID);
             db_close($con);
             header('Location:facilityManagement.php');
             

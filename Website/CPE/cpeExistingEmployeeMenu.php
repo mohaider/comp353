@@ -51,10 +51,10 @@ echo "</tr></table>";
 include_once("../scripts/db_script.php");
 $con = db_connect();
 //MYSQL query for facility information display 
-$existingFacQuery = " SELECT * FROM FACILITY  ";
+$existingFacQuery = " SELECT * FROM Facility  ";
 //mySQL query for finding the number of rooms in a facility
 $numOfRoomsQuery = "SELECT COUNT( FacilityID )"
-        . " FROM houses "
+        . " FROM Houses "
         . "WHERE FacilityID =";
 
 $existingFacilities = mysqli_query($con, $existingFacQuery);
