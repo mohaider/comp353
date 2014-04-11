@@ -44,7 +44,7 @@ include_once('scripts/employee_script.php');
                                     print_r(mysqli_error($con));
                                 }
                                 $facility = mysqli_fetch_row($resultFacility);
-                                $resultEmpList = mysqli_query($con, "INSERT INTO EMPLOYEELISTS VALUES('$empID', '$facility[0]');");
+                                $resultEmpList = mysqli_query($con, "INSERT INTO EmployeeLists VALUES('$empID', '$facility[0]');");
                                 if(!$resultEmpList)
                                 {
                                     print_r(mysqli_error($con));
@@ -55,7 +55,7 @@ include_once('scripts/employee_script.php');
                                     
                                     //mysql query to insert new employee into the list of employees of a facility
                                     
-                                    $sqlEmployee =  "INSERT INTO employeelists(FacilityID,EmpID) "
+                                    $sqlEmployee =  "INSERT INTO EmployeeLists(FacilityID,EmpID) "
                                             ." VALUES(".$_POST['facilityID'].",".$empID.") ";
                                     $resultOfSQLEmployeeQuery = mysqli_query($con,$sqlEmployee);
                                     if(!$resultOfSQLEmployeeQuery)
@@ -101,7 +101,7 @@ include_once('scripts/employee_script.php');
                          if ($_SESSION['role'] == "CPE"){
                             $con = db_connect();
                         //MySql retrieve a list of facilities to assign the new manager/employee to
-                            $sqlFacilityQuery = "SELECT ID,Address FROM facility";
+                            $sqlFacilityQuery = "SELECT ID,Address FROM Facility";
                             //       $existingFacilities = mysqli_query($con, $existingFacQuery);
                             $sqlExistingFacilityResults  = mysqli_query($con, $sqlFacilityQuery);
                             echo "<br>Assign new employee to a facility";
