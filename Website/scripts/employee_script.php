@@ -22,8 +22,9 @@
 		{
 			die (mysqli_error($connection));
 		}
+		$arr = mysqli_fetch_row($result);
+		$empID = $arr[0];
 		cleanDatabaseBuffer($connection);
-		$empID = mysqli_fetch_row($result)[0];
 		return $empID;
 	}
 	
