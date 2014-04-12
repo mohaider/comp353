@@ -10,7 +10,9 @@
 	function getAgeGroup($connection, $roomID)
 	{
 		$resultAgeGroup = mysqli_query($connection, "SELECT AgeGroup FROM Room WHERE RoomNum = '" . $roomID . "';");
-		return (mysqli_fetch_row($resultAgeGroup)[0]);
+		$row = mysqli_fetch_row($resultAgeGroup);
+		$group = $row[0];
+		return intval($group);
 	}
 	
 	function getStaffList($connection, $roomID)
