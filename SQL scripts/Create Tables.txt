@@ -232,7 +232,7 @@ StartDate DATE NOT NULL,
 EndDate DATE,
 SSN VARCHAR(9) NOT NULL,
 CHECK(Role IN('Employee','Manager','CPE','NLE')), 
-UNIQUE(SSN, EmpId),
+UNIQUE(SSN),
 PRIMARY KEY(EmpId)
 );
 
