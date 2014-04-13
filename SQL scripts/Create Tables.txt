@@ -427,6 +427,44 @@ DELIMITER ;
 
 DELIMITER $$
 
+CREATE TRIGGER BeforeUpdateRegistrationSheet
+BEFORE UPDATE ON RegistrationSheet
+FOR EACH ROW  
+BEGIN
+	SELECT Type INTO @FacilityType FROM Facility WHERE Facility.ID = NEW.FacilityID;
+	IF @FacilityType = "Home" THEN
+
+		SELECT COUNT(*) INTO @cntChildren FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID;
+		IF @cntChildren >= 9 THEN 
+   			CALL die_with_error('Too many children');
+		END IF;
+		IF NEW.AgeGroup = "Infant" THEN
+			SELECT COUNT(*) INTO @cntInfant FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
+			IF @cntInfant >= 4 THEN
+				CALL die_with_error('Too many infants');
+			END IF;
+		END IF;
+	END IF;
+
+	IF @FacilityType = "Center" THEN
+		SELECT COUNT(*) INTO @cntToddlers FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Toddler";
+		SELECT COUNT(*) INTO @cntInfants FROM RegistrationSheet WHERE FacilityID = NEW.FacilityID AND AgeGroup = "Infant";
+		SELECT COUNT(*) INTO @cntEmployees FROM EmployeeLists WHERE FacilityID = NEW.FacilityID;
+		IF @cntEmployees = 0 THEN
+			CALL die_with_error('No Employees');
+		END IF;
+		IF (@cntInfants >= 5 * @cntEmployees OR @cntToddlers >= 8 * @cntEmployees) OR (@cntInfants + @cntToddlers >= 8 * @cntEmployees) THEN 
+   			CALL die_with_error('Ratio of employee to children off');
+		END IF;
+	END IF;
+END$$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
 CREATE PROCEDURE getFamilyFromFacility(IN fID INT, IN ln VARCHAR(255), IN pn VARCHAR(255))
 BEGIN
 	SELECT *
