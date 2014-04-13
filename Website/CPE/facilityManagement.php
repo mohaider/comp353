@@ -21,6 +21,10 @@ if (isset($_POST['returnToCPEMenu'])) {
     header('Location:../CPE.php');
     die();
 }
+	if ( isset($_POST['AddNewRoom'])) {
+		$_SESSION['FacilityID'] = $_POST['facilitySelected'];
+		header('Location: AddNewRoom.php');
+	}
 
 
 
@@ -118,6 +122,7 @@ if (isset($_POST['returnToCPEMenu'])) {
             echo"</table>";
 
             echo " <input type='submit' name='facilitySubmissionEdit' value='Modify Selected Facility'>"
+			. " <input type='submit' name='AddNewRoom' value='Add New Room'>"
             . "</form>";
         } 
         else if (isset($_POST['submitFacilityMods'])) 
@@ -169,8 +174,10 @@ if (isset($_POST['returnToCPEMenu'])) {
             
         }
         ?>
+				
         <br>
         <FORM METHOD="POST" ACTION=''>
             <INPUT NAME= "newFacility" TYPE="submit" VALUE="Create New Facility">
                 <INPUT NAME= "returnToCPEMenu" TYPE="submit" VALUE="Return to CPE menu">
                     </FORM>
+					
