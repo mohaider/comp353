@@ -9,7 +9,7 @@
 	include_once('scripts/room_script.php');
 	include_once('scripts/db_script.php');
 	
-	$roomID = 'C666'; //$_SESSION['RoomNum'];
+	$roomID = $_SESSION['RoomNum'];
 	$connection = db_connect();
 	
 	$empList = getStaffList($connection, $roomID);
