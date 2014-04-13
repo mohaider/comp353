@@ -1,16 +1,23 @@
 <?php
-session_start();
-if(isset($_POST['Reset']))
-{
-    unset($_SESSION['RoomNum']);
-    header('Location: RoomSelect.php');
-}
+	session_start();
+	if(isset($_POST['Reset']))
+	{
+		unset($_SESSION['RoomNum']);
+		header('Location: RoomSelect.php');
+	}
 	include_once("scripts/staff_script.php");
 	include_once('scripts/room_script.php');
 	include_once('scripts/db_script.php');
 	
-	$roomID = 'C350'; //$_SESSION['RoomNum'];
+	$roomID = 'C666'; //$_SESSION['RoomNum'];
 	$connection = db_connect();
+	
+	$empList = getStaffList($connection, $roomID);
+	$empNumber = count($empList);
+	
+	$agegroup = getAgeGroup($connection, $roomID);
+	
+	$maxChild = getMaxNumberChildren($connection, $roomID, $empNumber, $agegroup);
 	
 	if (isset($_POST["submitFrmRoomInfo"]))
 	{
@@ -47,11 +54,11 @@ if(isset($_POST['Reset']))
 			Age group of the room:
 			<select id="sltAgeGroup" name="sltAgeGroupName">
 				<?php 
-					if (getAgeGroup($connection, $roomID) === "Infant")
+					if ($agegroup === "Infant")
 					{
 						echo "<option selected='selected'>Infants</option><option>Toddlers</option></select>";
 					}
-					else if (getAgeGroup($connection, $roomID) === "Toddler")
+					else if ($agegroup === "Toddler")
 					{
 						echo "<option>Infants</option><option selected='selected'>Toddlers</option></select>";
 					}
@@ -67,11 +74,8 @@ if(isset($_POST['Reset']))
 		<br />
 		Room Information:
 		<br />
-		<?php
-			$empList = getStaffList($connection, $roomID);
-			$empNumber = count($empList);
-		?>
-		Staff member: <?php echo $empNumber ?>)
+
+		Staff member: <?php echo $empNumber ?>
 		<div id="staffDialog" style="width: 800px;">
 			<table>
 				<tr>
@@ -98,7 +102,7 @@ if(isset($_POST['Reset']))
 			$childList = getChildrenList($connection, $roomID);
 			$childNumber = count($childList);
 		?>
-		Children: <?php echo $childNumber ?> / 9 <!--- WE NEED TO HAVE A FUNCTION TO CALCULATE THE RATIO --->
+		Children: <?php echo $childNumber ?> / <?php echo $maxChild ?><!--- WE NEED TO HAVE A FUNCTION TO CALCULATE THE RATIO --->
 		<div id="childrenDialog">
 			<table>
 				<tr>
