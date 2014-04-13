@@ -14,15 +14,87 @@ if (!isset($_SESSION['role'])) {
 }
 if ($_SESSION['role'] != 'CPE') {
      header('Location:../' .$_SESSION['role'].'PHP');
+}
+
+function checkifFull($facType,$facilityID)
+{
+    $isFull = false;
+//
+   if ($facType =='Home')
+   {
+       return getIfHomeIsFull($facilityID);
+   }
+   else if ($facType =='Center')
+   {
+       return getIfCenterIsFull($facilityID);
+       
+   }
+ 
+   return $isFull;
     
 }
+
+function getIfHomeIsFull($facilityID)
+{
+    $dbConnect = db_connect();
+    $sqlHomeCenterQuery="SELECT COUNT(FacilityID) FROM "
+            . "RegistrationSheet WHERE FacilityID= ".$facilityID;
+    $sqlHomeCenterQueryResult = mysqli_query($dbConnect, $sqlHomeCenterQuery);
+    $total = mysqli_fetch_row($sqlHomeCenterQueryResult);
+    print_r(mysqli_error($dbConnect));
+    if ($total[0] >=9 )
+        return true;
+    else {
+       //check for infants
+       cleanDatabaseBuffer($dbConnect);
+       $sqlInfantCount = "
+        SELECT COUNT(AgeGroup) FROM RegistrationSheet WHERE FacilityID=".$facilityID. " AND AgeGroup='Infant'";
+       $sqlInfantCountResult = mysqli_query($dbConnect, $sqlInfantCount);
+       $total = mysqli_fetch_row($sqlInfantCountResult);
+       return ($total[0] == 4); 
+
+    }
+    
+    
+    
+}
+function getIfCenterIsFull($facilityID)
+{
+    
+    $dbConnect = db_connect();
+    
+    $sqlInfantCount = "
+        SELECT COUNT(AgeGroup) FROM RegistrationSheet WHERE FacilityID=" . $facilityID . " AND AgeGroup='Infant'";
+    $sqlInfantCountResult = mysqli_query($dbConnect, $sqlInfantCount);
+    $infantTotal = mysqli_fetch_row($sqlInfantCountResult);
+
+    $sqlToddlerCount = "
+        SELECT COUNT(AgeGroup) FROM RegistrationSheet WHERE FacilityID=" . $facilityID . " AND AgeGroup='Toddler'";
+    $sqlToddlerCountResult = mysqli_query($dbConnect, $sqlToddlerCount);
+    $toddlerTotal = mysqli_fetch_row($sqlToddlerCountResult);
+    
+    $sqlEmployeeCount = "SELECT COUNT(EmpID) FROM EmployeeLists WHERE FacilityID= ".$facilityID;
+        
+    $sqlEmployeeCountResult = mysqli_query($dbConnect, $sqlEmployeeCount);
+    $employeeTotal = mysqli_fetch_row($sqlEmployeeCountResult);
+    
+    if ($employeeTotal[0] == 0 )
+        return true;
+    if (($infantTotal[0] >= 5* $employeeTotal[0] OR $toddlerTotal[0] >= 5* $employeeTotal[0] )
+          OR ( ($infantTotal[0] + $toddlerTotal[0] )>=8* $employeeTotal[0] ) )
+        return true;
+    
+}
+
+
+
+
 echo "<table><tr>";
 echo "<td><a href=\"../CPE.php\">CPE</a></td>";
 echo "<td><a href=\"../Manager.php\">Manager</a></td>";
 echo "<td><a href=\"../Employee.php\">Employee</a>";
 echo "</tr></table>";
 ?>
-
 <?php
  if(isset($_POST['facilitySubmissionEdit']))
  {
@@ -31,6 +103,9 @@ echo "</tr></table>";
      $newFacility = $_POST['facilitySelected'];
      $currentChild = $_SESSION['childSelected'];
      //mysql query to update child's registration sheet to new facility
+     
+     
+
      $sqlUpdateQuery = "UPDATE RegistrationSheet "
              . "SET FacilityID=".$newFacility." "
              . "WHERE MedicareNum='$currentChild'";
@@ -48,9 +123,12 @@ echo "</tr></table>";
          print_r(mysqli_error ($con));
      
      
-     
-     header('Location:childFacilityRelocationMenu.php');
- }
+     echo "<meta http-equiv='refresh'  content='0; url=https://clipper.encs.concordia.ca/~hac353_4/CPE/childFacilityRelocationMenu.php' />";
+     //header('Location:childFacilityRelocationMenu.php');
+     }
+     //ratio is full
+
+ 
 
 ?>
 
@@ -89,6 +167,14 @@ $facilitySelected = $_SESSION['facilitySelected'];
 $childSelected = $_SESSION['childSelected'];
 
 
+$sqlFactype = "SELECT Type FROM Facility WHERE ID=".$facilitySelected;
+$sqlFactypeResult = mysqli_query($con, $sqlFactype);
+$facilityTypeRow = mysqli_fetch_array($sqlFactypeResult, MYSQL_BOTH);
+$facilityType = $facilityTypeRow[0];
+$_SESSION['facilityType'] = $facilityType;
+
+
+
 //mysql query to select facilities that don't have the child as a registrant
 
 $sqlListofFacilities = "SELECT * FROM Facility "
@@ -116,21 +202,31 @@ if (!$sqlListofFacilitiesResult)
             
             while( $row = mysqli_fetch_array($sqlListofFacilitiesResult, MYSQL_BOTH))
             {
-                
-                echo " 
-                    <tr>
-                    <td><input type='radio' name='facilitySelected' id='facilityRadioButton' value=" . $row['ID'] . "></td>
-                    <td>" . $row['ID'] . "</td>
+                $type  = $row['Type'];
+                $ID     = $row['ID'];
+                echo " <tr>";
+               
+                    if (!checkifFull($type,$ID ) )
+                        {
+                        echo "<td><input type='radio' name='facilitySelected' id='facilityRadioButton' value=" . $ID . "></td>";
+                        }
+                        else {continue;}
+                    
+                    echo "
+                    <td>" . $ID . "</td>
                     <td>" . $row['Address'] . "</td>
-                    <td>" . $row['Type'] . "</td>
+                    <td>" . $type . "</td>
                     <td>" . $row['PhoneNum'] . "</td>
+                    
                     </tr>";
             }
            echo"</table>";
 
             echo " <input type='submit' name='facilitySubmissionEdit' value='Submit'>"
             . "</form>";
+
   ?>
+
         <a href="cpeExistingChild.php">Return to child selection menu</a>
     </body>
 </html>
