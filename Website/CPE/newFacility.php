@@ -12,22 +12,7 @@ if (isset($_POST['FacilityManagement'])) {
 $typeHome = "Home";
 $typeCenter = "Center";
 global $typeHome;
-global $typeCenter;
-?>
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <style>
-            .error {color: #FF0000;}
-        </style>
-        <title>Facility Creation</title>
-
-    </head>
-    <body>
-
-        <?php
-                
+global $typeCenter;              
 // define variables and set to empty values
 $typeErr = $addressErr = $phoneNumErr =$dbError = "";
 $daycareType = $address = $phoneNum =  "";
@@ -66,8 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 header('Location:facilityManagement.php');
     die();
      }
-     
-     
 }
 
 function test_input($data)
@@ -93,7 +76,16 @@ function writeToDatabase($data)
 }
 ?>
 
-        
+ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <style>
+            .error {color: #FF0000;}
+        </style>
+        <title>Facility Creation</title>
+
+    </head>
+    <body>       
 <h2>New Facility Creation</h2>
 <span class="error"><?php echo $dbError;?></span>
 <p><span class="error">* required field.</span></p>
